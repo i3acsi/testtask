@@ -1,0 +1,58 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="1.2.0" author="vasiliy.gasevskiy">
+        <insert tableName="usr">
+            <!--<column name="id" value="0"/>-->
+            <column name="username" value="admin"/>
+            <column name="password" value="$2y$12$9LfMJxZo6meaapDwG6vxvufMCB73NgqTHebpOmLVTyrCiN00auRzS"/>
+            <column name="telephone" value="admin"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="1.2.1" author="vasiliy.gasevskiy">
+        <insert tableName="usr">
+            <!--<column name="id" value="1"/>-->
+            <column name="username" value="operator1"/>
+            <column name="password" value="$2y$12$9LfMJxZo6meaapDwG6vxvufMCB73NgqTHebpOmLVTyrCiN00auRzS"/>
+            <column name="telephone" value="1"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="1.2.2" author="vasiliy.gasevskiy">
+        <insert tableName="usr">
+            <!--<column name="id" value="2"/>-->
+            <column name="username" value="courier1"/>
+            <column name="password" value="$2y$12$9LfMJxZo6meaapDwG6vxvufMCB73NgqTHebpOmLVTyrCiN00auRzS"/>
+            <column name="telephone" value="2"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="1.2.3" author="vasiliy.gasevskiy">
+        <insert tableName="user_roles">
+            <column name="user_id" value="0"/>
+            <column name="role_id" value="2"/>
+            <column name="roles" value="ROLE_ADMIN"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="1.2.4" author="vasiliy.gasevskiy">
+        <insert tableName="user_roles">
+            <column name="user_id" value="1"/>
+            <column name="role_id" value="1"/>
+            <column name="roles" value="ROLE_OPERATOR"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="1.2.5" author="vasiliy.gasevskiy">
+        <insert tableName="user_roles">
+            <column name="user_id" value="2"/>
+            <column name="role_id" value="0"/>
+            <column name="roles" value="ROLE_COURIER"/>
+        </insert>
+    </changeSet>
+
+
+</databaseChangeLog>

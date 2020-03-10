@@ -1,0 +1,80 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+
+    <changeSet id="1.1.0" author="vasiliy.gasevskiy">
+        <createTable tableName="order">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="order" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="description" type="TEXT">
+            </column>
+
+            <column name="client_name" type="VARCHAR(100)">
+            </column>
+
+            <column name="client_telephone" type="VARCHAR(100)">
+            </column>
+
+           <column name="created_date" type="DATE" defaultValue="NOW()">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="created_time" type="TIME WITHOUT TIME ZONE" defaultValue="NOW()">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="updated_date" type="DATE" defaultValue="NOW()">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="updated_time" type="TIME WITHOUT TIME ZONE" defaultValue="NOW()">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="active" type="BOOLEAN" defaultValue="TRUE">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="holder_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="courier_id" type="BIGINT">
+            </column>
+
+            <column name="history" type="TEXT">
+            </column>
+
+        </createTable>
+    </changeSet>
+
+
+    <changeSet id="1.1.1" author="vasiliy.gasevskiy">
+        <addForeignKeyConstraint baseColumnNames="holder_id"
+                                 baseTableName="order"
+                                 constraintName="fk_order_author"
+                                 onDelete="RESTRICT"
+                                 onUpdate="CASCADE"
+                                 referencedColumnNames="id"
+                                 referencedTableName="usr"/>
+    </changeSet>
+
+    <changeSet id="1.1.2" author="vasiliy.gasevskiy">
+        <addForeignKeyConstraint baseColumnNames="courier_id"
+                                 baseTableName="order"
+                                 constraintName="fk_order_executor"
+                                 onDelete="CASCADE"
+                                 onUpdate="CASCADE"
+                                 referencedColumnNames="id"
+                                 referencedTableName="usr"/>
+    </changeSet>
+
+</databaseChangeLog>
