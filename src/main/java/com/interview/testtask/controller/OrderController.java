@@ -3,28 +3,45 @@ package com.interview.testtask.controller;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.interview.testtask.entity.Order;
 import com.interview.testtask.entity.Views;
-import com.interview.testtask.repository.OrderRepo;
+import com.interview.testtask.service.OrderService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @AllArgsConstructor
 public class OrderController {
-    private final OrderRepo orderRepo;
+    private final OrderService orderService;
 
     @RequestMapping(value = "/order", method = RequestMethod.GET)
     @JsonView(Views.SimpleView.class)
-    public List<Order> list(){
-        return orderRepo.findAll();
+    public List<Order> list(@RequestParam(required = false) LocalDate from,
+                            @RequestParam(required = false) LocalDate to){
+        return getOrders(from, to);
     }
 
     @RequestMapping(value = "/order-manage", method = RequestMethod.GET)
-    @JsonView(Views.SimpleView.class)
-    public List<Order> listManage(){
-        return orderRepo.findAll();
+    @JsonView(Views.CommonView.class)
+    public List<Order> listManage(@RequestParam(required = false) LocalDate from,
+                                  @RequestParam(required = false) LocalDate to){
+        return getOrders(from, to);
     }
+
+    private List<Order> getOrders(@RequestParam(required = false) LocalDate from,
+                                  @RequestParam(required = false) LocalDate to) {
+        List<Order> result = new ArrayList<>();
+        if (from!=null&&to!=null) {
+            result = orderService.getOrdersByLastDateRange(from, to);
+        } else {
+            result = orderService.findAll();
+        }
+        return result;
+    }
+
 }
