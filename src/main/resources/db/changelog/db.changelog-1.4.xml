@@ -3,7 +3,7 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
-    <changeSet id="1.3.0" author="vasiliy.gasevskiy">
+    <changeSet id="1.4.0" author="vasiliy.gasevskiy">
         <insert tableName="orders">
             <column name="name" value="test order"/>
             <column name="description" value="description"/>

@@ -23,25 +23,23 @@ public class OrderController {
     @JsonView(Views.SimpleView.class)
     public List<Order> list(@RequestParam(required = false) LocalDate from,
                             @RequestParam(required = false) LocalDate to){
-        return getOrders(from, to);
+        return orderService.getOrdersByLastDateRange(from,to);
     }
 
     @RequestMapping(value = "/order-manage", method = RequestMethod.GET)
     @JsonView(Views.CommonView.class)
     public List<Order> listManage(@RequestParam(required = false) LocalDate from,
                                   @RequestParam(required = false) LocalDate to){
-        return getOrders(from, to);
+        return orderService.getOrdersByLastDateRange(from,to);
     }
 
-    private List<Order> getOrders(@RequestParam(required = false) LocalDate from,
-                                  @RequestParam(required = false) LocalDate to) {
-        List<Order> result = new ArrayList<>();
-        if (from!=null&&to!=null) {
-            result = orderService.getOrdersByLastDateRange(from, to);
-        } else {
-            result = orderService.findAll();
-        }
-        return result;
+    @RequestMapping(value = "/admin", method = RequestMethod.GET)
+    @JsonView(Views.FullView.class)
+    public List<Order> fullList(@RequestParam(required = false) LocalDate from,
+                                  @RequestParam(required = false) LocalDate to){
+        return orderService.getOrdersByLastDateRange(from,to);
     }
+
+
 
 }

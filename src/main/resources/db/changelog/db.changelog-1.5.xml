@@ -1,0 +1,211 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="1.5.0" author="vasiliy.gasevskiy">
+        <insert tableName="orders">
+            <column name="name" value="test order 1"/>
+            <column name="description" value="description 1"/>
+            <column name="client_name" value="test client 1"/>
+            <column name="client_telephone" value="test telephone 1"/>
+            <column name="created_date" value="2019-01-01"/>
+            <column name="created_time" value="12:00:00"/>
+            <column name="updated_date" value="2019-01-01"/>
+            <column name="updated_time" value="12:00:00"/>
+            <column name="active" value="TRUE"/>
+            <column name="holder_id" value="2"/>
+            <column name="courier_id" value="3"/>
+            <column name="history" value="test 1"/>
+        </insert>
+    </changeSet>
+	
+	<changeSet id="1.5.1" author="vasiliy.gasevskiy">
+        <insert tableName="orders">
+            <column name="name" value="test order 2"/>
+            <column name="description" value="description 2"/>
+            <column name="client_name" value="test client 2"/>
+            <column name="client_telephone" value="test telephone 2"/>
+            <column name="created_date" value="2019-02-01"/>
+            <column name="created_time" value="12:00:00"/>
+            <column name="updated_date" value="2019-02-01"/>
+            <column name="updated_time" value="12:00:00"/>
+            <column name="active" value="TRUE"/>
+            <column name="holder_id" value="2"/>
+            <column name="courier_id" value="3"/>
+            <column name="history" value="test 2"/>
+        </insert>
+    </changeSet>
+	
+	<changeSet id="1.5.2" author="vasiliy.gasevskiy">
+        <insert tableName="orders">
+            <column name="name" value="test order 3"/>
+            <column name="description" value="description 3"/>
+            <column name="client_name" value="test client 3"/>
+            <column name="client_telephone" value="test telephone 3"/>
+            <column name="created_date" value="2019-03-01"/>
+            <column name="created_time" value="12:00:00"/>
+            <column name="updated_date" value="2019-03-01"/>
+            <column name="updated_time" value="12:00:00"/>
+            <column name="active" value="TRUE"/>
+            <column name="holder_id" value="2"/>
+            <column name="courier_id" value="3"/>
+            <column name="history" value="test 3"/>
+        </insert>
+    </changeSet>
+	
+	<changeSet id="1.5.3" author="vasiliy.gasevskiy">
+        <insert tableName="orders">
+            <column name="name" value="test order 4"/>
+            <column name="description" value="description 4"/>
+            <column name="client_name" value="test client 4"/>
+            <column name="client_telephone" value="test telephone 4"/>
+            <column name="created_date" value="2019-04-01"/>
+            <column name="created_time" value="12:00:00"/>
+            <column name="updated_date" value="2019-04-01"/>
+            <column name="updated_time" value="12:00:00"/>
+            <column name="active" value="TRUE"/>
+            <column name="holder_id" value="2"/>
+            <column name="courier_id" value="3"/>
+            <column name="history" value="test 4"/>
+        </insert>
+    </changeSet>
+	
+	<changeSet id="1.5.4" author="vasiliy.gasevskiy">
+        <insert tableName="orders">
+            <column name="name" value="test order 5"/>
+            <column name="description" value="description 5"/>
+            <column name="client_name" value="test client 5"/>
+            <column name="client_telephone" value="test telephone 5"/>
+            <column name="created_date" value="2019-05-01"/>
+            <column name="created_time" value="12:00:00"/>
+            <column name="updated_date" value="2019-05-01"/>
+            <column name="updated_time" value="12:00:00"/>
+            <column name="active" value="TRUE"/>
+            <column name="holder_id" value="2"/>
+            <column name="courier_id" value="3"/>
+            <column name="history" value="test 5"/>
+        </insert>
+    </changeSet>
+	
+	<changeSet id="1.5.5" author="vasiliy.gasevskiy">
+        <insert tableName="orders">
+            <column name="name" value="test order 6"/>
+            <column name="description" value="description 6"/>
+            <column name="client_name" value="test client 6"/>
+            <column name="client_telephone" value="test telephone 6"/>
+            <column name="created_date" value="2019-06-01"/>
+            <column name="created_time" value="12:00:00"/>
+            <column name="updated_date" value="2019-06-01"/>
+            <column name="updated_time" value="12:00:00"/>
+            <column name="active" value="TRUE"/>
+            <column name="holder_id" value="2"/>
+            <column name="courier_id" value="3"/>
+            <column name="history" value="test 6"/>
+        </insert>
+    </changeSet>
+	
+	<changeSet id="1.5.6" author="vasiliy.gasevskiy">
+        <insert tableName="orders">
+            <column name="name" value="test order 7"/>
+            <column name="description" value="description 7"/>
+            <column name="client_name" value="test client 7"/>
+            <column name="client_telephone" value="test telephone 7"/>
+            <column name="created_date" value="2019-07-01"/>
+            <column name="created_time" value="12:00:00"/>
+            <column name="updated_date" value="2019-07-01"/>
+            <column name="updated_time" value="12:00:00"/>
+            <column name="active" value="TRUE"/>
+            <column name="holder_id" value="2"/>
+            <column name="courier_id" value="3"/>
+            <column name="history" value="test 7"/>
+        </insert>
+    </changeSet>
+	
+	<changeSet id="1.5.7" author="vasiliy.gasevskiy">
+        <insert tableName="orders">
+            <column name="name" value="test order 8"/>
+            <column name="description" value="description 8"/>
+            <column name="client_name" value="test client 8"/>
+            <column name="client_telephone" value="test telephone 8"/>
+            <column name="created_date" value="2019-08-01"/>
+            <column name="created_time" value="12:00:00"/>
+            <column name="updated_date" value="2019-08-01"/>
+            <column name="updated_time" value="12:00:00"/>
+            <column name="active" value="TRUE"/>
+            <column name="holder_id" value="2"/>
+            <column name="courier_id" value="3"/>
+            <column name="history" value="test 8"/>
+        </insert>
+    </changeSet>
+	
+	<changeSet id="1.5.8" author="vasiliy.gasevskiy">
+        <insert tableName="orders">
+            <column name="name" value="test order 9"/>
+            <column name="description" value="description 9"/>
+            <column name="client_name" value="test client 9"/>
+            <column name="client_telephone" value="test telephone 9"/>
+            <column name="created_date" value="2019-09-01"/>
+            <column name="created_time" value="12:00:00"/>
+            <column name="updated_date" value="2019-09-01"/>
+            <column name="updated_time" value="12:00:00"/>
+            <column name="active" value="TRUE"/>
+            <column name="holder_id" value="2"/>
+            <column name="courier_id" value="3"/>
+            <column name="history" value="test 1"/>
+        </insert>
+    </changeSet>
+	
+	<changeSet id="1.5.9" author="vasiliy.gasevskiy">
+        <insert tableName="orders">
+            <column name="name" value="test order 10"/>
+            <column name="description" value="description 10"/>
+            <column name="client_name" value="test client 10"/>
+            <column name="client_telephone" value="test telephone 10"/>
+            <column name="created_date" value="2019-10-01"/>
+            <column name="created_time" value="12:00:00"/>
+            <column name="updated_date" value="2019-10-01"/>
+            <column name="updated_time" value="12:00:00"/>
+            <column name="active" value="TRUE"/>
+            <column name="holder_id" value="2"/>
+            <column name="courier_id" value="3"/>
+            <column name="history" value="test 10"/>
+        </insert>
+    </changeSet>
+	
+	<changeSet id="1.5.10" author="vasiliy.gasevskiy">
+        <insert tableName="orders">
+            <column name="name" value="test order 11"/>
+            <column name="description" value="description 11"/>
+            <column name="client_name" value="test client 11"/>
+            <column name="client_telephone" value="test telephone 11"/>
+            <column name="created_date" value="2019-11-01"/>
+            <column name="created_time" value="12:00:00"/>
+            <column name="updated_date" value="2019-11-01"/>
+            <column name="updated_time" value="12:00:00"/>
+            <column name="active" value="TRUE"/>
+            <column name="holder_id" value="2"/>
+            <column name="courier_id" value="3"/>
+            <column name="history" value="test 11"/>
+        </insert>
+    </changeSet>
+	
+	<changeSet id="1.5.11" author="vasiliy.gasevskiy">
+        <insert tableName="orders">
+            <column name="name" value="test order 12"/>
+            <column name="description" value="description 12"/>
+            <column name="client_name" value="test client 12"/>
+            <column name="client_telephone" value="test telephone 12"/>
+            <column name="created_date" value="2019-12-01"/>
+            <column name="created_time" value="12:00:00"/>
+            <column name="updated_date" value="2019-12-01"/>
+            <column name="updated_time" value="12:00:00"/>
+            <column name="active" value="TRUE"/>
+            <column name="holder_id" value="2"/>
+            <column name="courier_id" value="3"/>
+            <column name="history" value="test 12"/>
+        </insert>
+    </changeSet>
+
+
+</databaseChangeLog>
