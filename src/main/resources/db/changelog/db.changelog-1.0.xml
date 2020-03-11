@@ -6,7 +6,7 @@
 
     <changeSet id="1.0.0" author="vasiliy.gasevskiy">
         <createTable tableName="usr">
-            <column name="id" type="BIGINT" autoIncrement="true"  startWith="0">
+            <column name="id" type="BIGINT" autoIncrement="true"  startWith="1">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
 
@@ -26,7 +26,7 @@
 
     <changeSet id="1.0.1" author="vasiliy.gasevskiy">
         <createTable tableName="roles">
-            <column name="id" type="BIGINT" autoIncrement="true"  startWith="0">
+            <column name="id" type="BIGINT" autoIncrement="true"  startWith="1">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
 

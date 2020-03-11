@@ -5,12 +5,12 @@
 
 
     <changeSet id="1.1.0" author="vasiliy.gasevskiy">
-        <createTable tableName="order">
+        <createTable tableName="orders">
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
 
-            <column name="order" type="VARCHAR(100)">
+            <column name="name" type="VARCHAR(100)">
                 <constraints nullable="false"/>
             </column>
 
@@ -44,7 +44,6 @@
             </column>
 
             <column name="holder_id" type="BIGINT">
-                <constraints nullable="false"/>
             </column>
 
             <column name="courier_id" type="BIGINT">
@@ -57,24 +56,6 @@
     </changeSet>
 
 
-    <changeSet id="1.1.1" author="vasiliy.gasevskiy">
-        <addForeignKeyConstraint baseColumnNames="holder_id"
-                                 baseTableName="order"
-                                 constraintName="fk_order_author"
-                                 onDelete="RESTRICT"
-                                 onUpdate="CASCADE"
-                                 referencedColumnNames="id"
-                                 referencedTableName="usr"/>
-    </changeSet>
 
-    <changeSet id="1.1.2" author="vasiliy.gasevskiy">
-        <addForeignKeyConstraint baseColumnNames="courier_id"
-                                 baseTableName="order"
-                                 constraintName="fk_order_executor"
-                                 onDelete="CASCADE"
-                                 onUpdate="CASCADE"
-                                 referencedColumnNames="id"
-                                 referencedTableName="usr"/>
-    </changeSet>
 
 </databaseChangeLog>

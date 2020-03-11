@@ -1,0 +1,24 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="1.3.0" author="vasiliy.gasevskiy">
+        <insert tableName="orders">
+            <column name="name" value="test order"/>
+            <column name="description" value="description"/>
+            <column name="client_name" value="test client"/>
+            <column name="client_telephone" value="test telephone"/>
+            <column name="created_date" value="NOW()"/>
+            <column name="created_time" value="NOW()"/>
+            <column name="updated_date" value="NOW()"/>
+            <column name="updated_time" value="NOW()"/>
+            <column name="active" value="TRUE"/>
+            <column name="holder_id" value="2"/>
+            <column name="courier_id" value="3"/>
+            <column name="history" value="test"/>
+        </insert>
+    </changeSet>
+
+
+</databaseChangeLog>
