@@ -1,7 +1,10 @@
 package com.interview.testtask;
 
 
+import com.interview.testtask.controller.LoginController;
+import com.interview.testtask.controller.OrderController;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.core.StringContains.containsString;
@@ -13,7 +16,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 class GreetingAndLoginTests extends com.interview.testtask.TestInit {
+    private LoginController loginController;
+    private OrderController orderController;
 
+    @Autowired
+    public void setLoginController(LoginController loginController) {
+        this.loginController = loginController;
+    }
+
+    @Autowired
+    public void setOrderController(OrderController orderController) { this.orderController = orderController; }
 
     @Test
     public void contextLoads() {

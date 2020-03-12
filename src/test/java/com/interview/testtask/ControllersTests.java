@@ -6,6 +6,7 @@ import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
+import org.springframework.test.context.TestPropertySource;
 
 import java.time.LocalDate;
 
@@ -58,7 +59,7 @@ public class ControllersTests extends com.interview.testtask.TestInit {
                 .andExpect(jsonPath("$[1].holder.roles", Matchers.contains("ROLE_OPERATOR")))
                 .andExpect(jsonPath("$[2].holder", hasKey("roles")))
                 .andExpect(jsonPath("$[2].holder.roles", Matchers.contains("ROLE_OPERATOR")))
-                ;
+        ;
     }
 
     @Test
@@ -113,6 +114,28 @@ public class ControllersTests extends com.interview.testtask.TestInit {
                 .andExpect(jsonPath("$[0].holder", Matchers.not(hasKey("roles"))))
                 .andExpect(jsonPath("$[1].holder", Matchers.not(hasKey("roles"))))
                 .andExpect(jsonPath("$[2].holder", Matchers.not(hasKey("roles"))))
+        ;
+    }
+
+    /**
+     * Before courier accepts the order, orders holder is operator.
+     * After courier accepts the order,  the courier becomes the holder of the order.
+     */
+    @Test
+    @WithUserDetails("courier1")
+    public void whenCourierAcceptsOrderThenOrderChanges() throws Exception {
+        this.mockMvc.perform(get("/order"))
+                .andDo(print())
+                .andExpect(jsonPath("$[1].id", Matchers.is(2)))
+                .andExpect(jsonPath("$[1].holder.id", Matchers.is(2)))
+        ;
+        this.mockMvc.perform(get("/order/2"))
+                .andDo(print())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$", hasKey("id")))
+                .andExpect(jsonPath("$.id", Matchers.is(2)))
+                .andExpect(jsonPath("$", hasKey("holder")))
+                .andExpect(jsonPath("$.holder.id", Matchers.is(3)))
         ;
     }
 
