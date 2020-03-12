@@ -15,7 +15,6 @@
             <column name="updated_time" value="NOW()"/>
             <column name="active" value="TRUE"/>
             <column name="holder_id" value="2"/>
-            <column name="courier_id" value="3"/>
             <column name="history" value="test"/>
         </insert>
     </changeSet>

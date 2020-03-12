@@ -58,11 +58,6 @@ public class Order {
     @JoinColumn(name = "holder_id")
     private User holder;
 
-    @JsonView(Views.SimpleView.class)
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "courier_id")
-    private User courier;
-
     @JsonView(Views.CommonView.class)
     private String history;
 }

@@ -24,7 +24,7 @@ public class User  implements UserDetails {
     @JsonView(Views.SimpleView.class)
     private String username;
 
-    @JsonView(Views.FullView.class)
+    @JsonIgnore
     private String password;
 
     @JsonView(Views.SimpleView.class)

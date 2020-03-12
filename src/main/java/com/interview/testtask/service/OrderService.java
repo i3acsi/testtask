@@ -1,5 +1,7 @@
 package com.interview.testtask.service;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.interview.testtask.entity.Order;
 import com.interview.testtask.repository.OrderRepo;
 import lombok.AllArgsConstructor;
@@ -14,16 +16,19 @@ import java.util.List;
 @AllArgsConstructor
 public class OrderService {
     private final OrderRepo orderRepo;
+//    private final ObjectMapper dateMapper;
 
     public List<Order> getOrdersByCreatedDateRange(LocalDate from, LocalDate to) {
         return orderRepo.getOrdersByCreatedDateBetween(from, to);
     }
 
-    public List<Order> getOrdersByLastDateRange(@RequestParam(required = false) LocalDate from,
-                                                @RequestParam(required = false) LocalDate to) {
+    public List<Order> getOrdersByLastDateRange(@RequestParam(required = false) String from,
+                                                @RequestParam(required = false) String to) {
         List<Order> result = new ArrayList<>();
         if (from != null && to != null) {
-            result = orderRepo.getOrdersByUpdatedDateBetween(from, to);
+            LocalDate f = LocalDate.parse(from);
+            LocalDate t = LocalDate.parse(to);
+            result = orderRepo.getOrdersByUpdatedDateBetween(f, t);
         } else {
             result = orderRepo.findAll();
         }

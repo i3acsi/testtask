@@ -15,7 +15,6 @@
             <column name="updated_time" value="12:00:00"/>
             <column name="active" value="TRUE"/>
             <column name="holder_id" value="2"/>
-            <column name="courier_id" value="3"/>
             <column name="history" value="test 1"/>
         </insert>
     </changeSet>
@@ -32,7 +31,6 @@
             <column name="updated_time" value="12:00:00"/>
             <column name="active" value="TRUE"/>
             <column name="holder_id" value="2"/>
-            <column name="courier_id" value="3"/>
             <column name="history" value="test 2"/>
         </insert>
     </changeSet>
@@ -49,7 +47,6 @@
             <column name="updated_time" value="12:00:00"/>
             <column name="active" value="TRUE"/>
             <column name="holder_id" value="2"/>
-            <column name="courier_id" value="3"/>
             <column name="history" value="test 3"/>
         </insert>
     </changeSet>
@@ -66,7 +63,7 @@
             <column name="updated_time" value="12:00:00"/>
             <column name="active" value="TRUE"/>
             <column name="holder_id" value="2"/>
-            <column name="courier_id" value="3"/>
+
             <column name="history" value="test 4"/>
         </insert>
     </changeSet>
@@ -83,7 +80,6 @@
             <column name="updated_time" value="12:00:00"/>
             <column name="active" value="TRUE"/>
             <column name="holder_id" value="2"/>
-            <column name="courier_id" value="3"/>
             <column name="history" value="test 5"/>
         </insert>
     </changeSet>
@@ -100,7 +96,6 @@
             <column name="updated_time" value="12:00:00"/>
             <column name="active" value="TRUE"/>
             <column name="holder_id" value="2"/>
-            <column name="courier_id" value="3"/>
             <column name="history" value="test 6"/>
         </insert>
     </changeSet>
@@ -117,7 +112,6 @@
             <column name="updated_time" value="12:00:00"/>
             <column name="active" value="TRUE"/>
             <column name="holder_id" value="2"/>
-            <column name="courier_id" value="3"/>
             <column name="history" value="test 7"/>
         </insert>
     </changeSet>
@@ -134,7 +128,6 @@
             <column name="updated_time" value="12:00:00"/>
             <column name="active" value="TRUE"/>
             <column name="holder_id" value="2"/>
-            <column name="courier_id" value="3"/>
             <column name="history" value="test 8"/>
         </insert>
     </changeSet>
@@ -151,7 +144,6 @@
             <column name="updated_time" value="12:00:00"/>
             <column name="active" value="TRUE"/>
             <column name="holder_id" value="2"/>
-            <column name="courier_id" value="3"/>
             <column name="history" value="test 1"/>
         </insert>
     </changeSet>
@@ -168,7 +160,6 @@
             <column name="updated_time" value="12:00:00"/>
             <column name="active" value="TRUE"/>
             <column name="holder_id" value="2"/>
-            <column name="courier_id" value="3"/>
             <column name="history" value="test 10"/>
         </insert>
     </changeSet>
@@ -185,7 +176,6 @@
             <column name="updated_time" value="12:00:00"/>
             <column name="active" value="TRUE"/>
             <column name="holder_id" value="2"/>
-            <column name="courier_id" value="3"/>
             <column name="history" value="test 11"/>
         </insert>
     </changeSet>
@@ -202,7 +192,6 @@
             <column name="updated_time" value="12:00:00"/>
             <column name="active" value="TRUE"/>
             <column name="holder_id" value="2"/>
-            <column name="courier_id" value="3"/>
             <column name="history" value="test 12"/>
         </insert>
     </changeSet>
