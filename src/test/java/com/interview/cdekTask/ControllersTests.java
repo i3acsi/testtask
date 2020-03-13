@@ -6,19 +6,17 @@ import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
-import org.springframework.test.web.servlet.RequestBuilder;
 
 import java.time.LocalDateTime;
-import java.util.regex.Matcher;
 
 import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.StringContains.containsString;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 
 @Slf4j
@@ -159,7 +157,7 @@ public class ControllersTests extends com.interview.cdekTask.TestInit {
                 .andDo(print())
                 .andExpect(jsonPath("$", hasSize(12)));
 
-        this.mockMvc.perform(delete("/order/5"))
+        this.mockMvc.perform(delete("/order/12"))
                 .andDo(print());
 
         this.mockMvc.perform(get("/order"))
