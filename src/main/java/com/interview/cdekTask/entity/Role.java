@@ -1,9 +1,9 @@
-package com.interview.testtask.entity;
+package com.interview.cdekTask.entity;
 
 import org.springframework.security.core.GrantedAuthority;
 
-public enum  Role implements GrantedAuthority {
-    ROLE_COURIER,ROLE_OPERATOR, ROLE_ADMIN;
+public enum Role implements GrantedAuthority {
+    ROLE_COURIER, ROLE_OPERATOR, ROLE_ADMIN;
 
     @Override
     public String getAuthority() {

@@ -1,6 +1,6 @@
-package com.interview.testtask.repository;
+package com.interview.cdekTask.repository;
 
-import com.interview.testtask.entity.User;
+import com.interview.cdekTask.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepo extends JpaRepository<User, Long> {

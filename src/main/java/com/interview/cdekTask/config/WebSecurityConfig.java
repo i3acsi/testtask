@@ -1,4 +1,4 @@
-package com.interview.testtask.config;
+package com.interview.cdekTask.config;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,9 +27,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                     .antMatchers("/", "/greeting", "/login" )
                         .permitAll()
-                    .antMatchers("/admin/**").hasRole("ADMIN")
-                    .antMatchers("/order/**").hasRole("COURIER")
-                    .antMatchers("/order-manage/**").hasRole("OPERATOR")
+                    .antMatchers("/admin/**")
+                        .hasRole("ADMIN")
+                    .antMatchers("/order/**")
+                        .hasRole("COURIER")
+                    .antMatchers("/order-manage/**")
+                        .hasRole("OPERATOR")
 
                 .anyRequest()
                         .authenticated()
@@ -39,9 +42,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                             .loginPage("/login")
                                 .permitAll()
                                     .successForwardUrl("/success")
-                .and().rememberMe()
-                .and() .logout().permitAll()
-                .and().csrf().disable()
+                .and()
+                    .rememberMe()
+                .and()
+                    .logout()
+                        .permitAll()
+                .and()
+                    .csrf()
+                        .disable()
         ;
 
     }

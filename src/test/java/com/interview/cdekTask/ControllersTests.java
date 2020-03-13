@@ -1,4 +1,4 @@
-package com.interview.testtask;
+package com.interview.cdekTask;
 
 
 import lombok.extern.slf4j.Slf4j;
@@ -6,11 +6,11 @@ import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
-import org.springframework.test.context.TestPropertySource;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.hasKey;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @Slf4j
-public class ControllersTests extends com.interview.testtask.TestInit {
+public class ControllersTests extends com.interview.cdekTask.TestInit {
 
     @Test
     @WithUserDetails("admin")
@@ -33,8 +33,8 @@ public class ControllersTests extends com.interview.testtask.TestInit {
     @Test
     @WithUserDetails("admin")
     public void loadOrdersWithDateRangeOnAdminPage() throws Exception {
-        String from = LocalDate.of(2019, 5, 1).toString();
-        String to = LocalDate.of(2019, 7, 1).toString();
+        String from = LocalDateTime.of(2019, 5, 1, 12, 0, 0).toString();
+        String to = LocalDateTime.of(2019, 7, 1, 12, 0, 0).toString();
         log.info("FROM: " + from);
         log.info("TO: " + to);
         this.mockMvc.perform(get("/admin").param("from", from).param("to", to))
@@ -47,12 +47,12 @@ public class ControllersTests extends com.interview.testtask.TestInit {
                 .andExpect(jsonPath("$[0].name", Matchers.is("test order 5")))
                 .andExpect(jsonPath("$[1].name", Matchers.is("test order 6")))
                 .andExpect(jsonPath("$[2].name", Matchers.is("test order 7")))
-                .andExpect(jsonPath("$[0]", hasKey("createdDate")))
-                .andExpect(jsonPath("$[0].createdDate", Matchers.is("2019-05-01")))
-                .andExpect(jsonPath("$[1]", hasKey("createdDate")))
-                .andExpect(jsonPath("$[1].createdDate", Matchers.is("2019-06-01")))
-                .andExpect(jsonPath("$[2]", hasKey("createdDate")))
-                .andExpect(jsonPath("$[2].createdDate", Matchers.is("2019-07-01")))
+                .andExpect(jsonPath("$[0]", hasKey("created")))
+                .andExpect(jsonPath("$[0].created", Matchers.is("2019-05-01 12:00:00")))
+                .andExpect(jsonPath("$[1]", hasKey("created")))
+                .andExpect(jsonPath("$[1].created", Matchers.is("2019-06-01 12:00:00")))
+                .andExpect(jsonPath("$[2]", hasKey("created")))
+                .andExpect(jsonPath("$[2].created", Matchers.is("2019-07-01 12:00:00")))
                 .andExpect(jsonPath("$[0].holder", hasKey("roles")))
                 .andExpect(jsonPath("$[0].holder.roles", Matchers.contains("ROLE_OPERATOR")))
                 .andExpect(jsonPath("$[1].holder", hasKey("roles")))
@@ -65,8 +65,8 @@ public class ControllersTests extends com.interview.testtask.TestInit {
     @Test
     @WithUserDetails("operator1")
     public void loadOrdersWithDateRangeOnOperatorsPage() throws Exception {
-        String from = LocalDate.of(2019, 5, 1).toString();
-        String to = LocalDate.of(2019, 7, 1).toString();
+        String from = LocalDateTime.of(2019, 5, 1, 12, 0, 0).toString();
+        String to = LocalDateTime.of(2019, 7, 1, 12, 0, 0).toString();
         log.info("FROM: " + from);
         log.info("TO: " + to);
         this.mockMvc.perform(get("/order-manage").param("from", from).param("to", to))
@@ -79,12 +79,12 @@ public class ControllersTests extends com.interview.testtask.TestInit {
                 .andExpect(jsonPath("$[0].name", Matchers.is("test order 5")))
                 .andExpect(jsonPath("$[1].name", Matchers.is("test order 6")))
                 .andExpect(jsonPath("$[2].name", Matchers.is("test order 7")))
-                .andExpect(jsonPath("$[0]", hasKey("createdDate")))
-                .andExpect(jsonPath("$[0].createdDate", Matchers.is("2019-05-01")))
-                .andExpect(jsonPath("$[1]", hasKey("createdDate")))
-                .andExpect(jsonPath("$[1].createdDate", Matchers.is("2019-06-01")))
-                .andExpect(jsonPath("$[2]", hasKey("createdDate")))
-                .andExpect(jsonPath("$[2].createdDate", Matchers.is("2019-07-01")))
+                .andExpect(jsonPath("$[0]", hasKey("created")))
+                .andExpect(jsonPath("$[0].created", Matchers.is("2019-05-01 12:00:00")))
+                .andExpect(jsonPath("$[1]", hasKey("created")))
+                .andExpect(jsonPath("$[1].created", Matchers.is("2019-06-01 12:00:00")))
+                .andExpect(jsonPath("$[2]", hasKey("created")))
+                .andExpect(jsonPath("$[2].created", Matchers.is("2019-07-01 12:00:00")))
                 .andExpect(jsonPath("$[0].holder", Matchers.not(hasKey("roles"))))
                 .andExpect(jsonPath("$[1].holder", Matchers.not(hasKey("roles"))))
                 .andExpect(jsonPath("$[2].holder", Matchers.not(hasKey("roles"))))
@@ -94,8 +94,8 @@ public class ControllersTests extends com.interview.testtask.TestInit {
     @Test
     @WithUserDetails("courier1")
     public void loadOrdersWithDateRangeOnCouriersPage() throws Exception {
-        String from = LocalDate.of(2019, 5, 1).toString();
-        String to = LocalDate.of(2019, 7, 1).toString();
+        String from = LocalDateTime.of(2019, 5, 1, 12, 0, 0).toString();
+        String to = LocalDateTime.of(2019, 7, 1, 12, 0, 0).toString();
         log.info("FROM: " + from);
         log.info("TO: " + to);
         this.mockMvc.perform(get("/order").param("from", from).param("to", to))
@@ -108,9 +108,9 @@ public class ControllersTests extends com.interview.testtask.TestInit {
                 .andExpect(jsonPath("$[0].name", Matchers.is("test order 5")))
                 .andExpect(jsonPath("$[1].name", Matchers.is("test order 6")))
                 .andExpect(jsonPath("$[2].name", Matchers.is("test order 7")))
-                .andExpect(jsonPath("$[0]", Matchers.not(hasKey("createdDate"))))
-                .andExpect(jsonPath("$[1]", Matchers.not(hasKey("createdDate"))))
-                .andExpect(jsonPath("$[2]", Matchers.not(hasKey("createdDate"))))
+                .andExpect(jsonPath("$[0]", Matchers.not(hasKey("created"))))
+                .andExpect(jsonPath("$[1]", Matchers.not(hasKey("created"))))
+                .andExpect(jsonPath("$[2]", Matchers.not(hasKey("created"))))
                 .andExpect(jsonPath("$[0].holder", Matchers.not(hasKey("roles"))))
                 .andExpect(jsonPath("$[1].holder", Matchers.not(hasKey("roles"))))
                 .andExpect(jsonPath("$[2].holder", Matchers.not(hasKey("roles"))))

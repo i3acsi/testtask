@@ -1,6 +1,6 @@
-package com.interview.testtask.service;
+package com.interview.cdekTask.service;
 
-import com.interview.testtask.repository.UserRepo;
+import com.interview.cdekTask.repository.UserRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

@@ -1,9 +1,9 @@
-package com.interview.testtask.entity;
+package com.interview.cdekTask.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
-import lombok.Data;
-import lombok.ToString;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -13,21 +13,24 @@ import java.util.Set;
 
 @Entity
 @Table(name = "usr")
-@Data
-@ToString(of ={"id", "username", "telephone"})
-public class User  implements UserDetails {
+@Getter
+@Setter
+public class User implements UserDetails {
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    @JsonView(Views.SimpleView.class)
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonView(Views.CourierView.class)
     private Long id;
 
-    @JsonView(Views.SimpleView.class)
+    @JsonView(Views.CourierView.class)
+    @Column(name = "username")
     private String username;
 
     @JsonIgnore
+    @Column(name = "password")
     private String password;
 
-    @JsonView(Views.SimpleView.class)
+    @JsonView(Views.CourierView.class)
+    @Column(name = "telephone")
     private String telephone;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)

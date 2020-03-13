@@ -23,23 +23,15 @@
             <column name="client_telephone" type="VARCHAR(100)">
             </column>
 
-           <column name="created_date" type="DATE" defaultValue="NOW()">
+            <column name="created" type="TIMESTAMP WITHOUT TIME ZONE" defaultValue="NOW()">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="created_time" type="TIME WITHOUT TIME ZONE" defaultValue="NOW()">
+            <column name="updated" type="TIMESTAMP WITHOUT TIME ZONE" defaultValue="NOW()">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="updated_date" type="DATE" defaultValue="NOW()">
-                <constraints nullable="false"/>
-            </column>
-
-            <column name="updated_time" type="TIME WITHOUT TIME ZONE" defaultValue="NOW()">
-                <constraints nullable="false"/>
-            </column>
-
-            <column name="active" type="BOOLEAN" defaultValue="TRUE">
+            <column name="complete" type="BOOLEAN" defaultValue="false">
                 <constraints nullable="false"/>
             </column>
 
@@ -51,8 +43,6 @@
 
         </createTable>
     </changeSet>
-
-
 
 
 </databaseChangeLog>

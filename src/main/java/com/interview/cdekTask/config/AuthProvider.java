@@ -1,8 +1,8 @@
-package com.interview.testtask.config;
+package com.interview.cdekTask.config;
 
 
-import com.interview.testtask.entity.User;
-import com.interview.testtask.service.UserService;
+import com.interview.cdekTask.entity.User;
+import com.interview.cdekTask.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationProvider;

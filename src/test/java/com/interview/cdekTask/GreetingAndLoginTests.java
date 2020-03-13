@@ -1,8 +1,8 @@
-package com.interview.testtask;
+package com.interview.cdekTask;
 
 
-import com.interview.testtask.controller.LoginController;
-import com.interview.testtask.controller.OrderController;
+import com.interview.cdekTask.controller.LoginController;
+import com.interview.cdekTask.controller.OrderController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -15,7 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
-class GreetingAndLoginTests extends com.interview.testtask.TestInit {
+class GreetingAndLoginTests extends com.interview.cdekTask.TestInit {
     private LoginController loginController;
     private OrderController orderController;
 
@@ -25,7 +25,9 @@ class GreetingAndLoginTests extends com.interview.testtask.TestInit {
     }
 
     @Autowired
-    public void setOrderController(OrderController orderController) { this.orderController = orderController; }
+    public void setOrderController(OrderController orderController) {
+        this.orderController = orderController;
+    }
 
     @Test
     public void contextLoads() {

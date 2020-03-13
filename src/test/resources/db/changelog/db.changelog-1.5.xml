@@ -9,11 +9,9 @@
             <column name="description" value="description 1"/>
             <column name="client_name" value="test client 1"/>
             <column name="client_telephone" value="test telephone 1"/>
-            <column name="created_date" value="2019-01-01"/>
-            <column name="created_time" value="12:00:00"/>
-            <column name="updated_date" value="2019-01-01"/>
-            <column name="updated_time" value="12:00:00"/>
-            <column name="active" value="TRUE"/>
+            <column name="created" value="2019-01-01 12:00:00"/>
+            <column name="updated" value="2019-01-01 12:00:00"/>
+            <column name="complete" value="FALSE"/>
             <column name="holder_id" value="2"/>
             <column name="history" value="test 1"/>
         </insert>
@@ -25,11 +23,9 @@
             <column name="description" value="description 2"/>
             <column name="client_name" value="test client 2"/>
             <column name="client_telephone" value="test telephone 2"/>
-            <column name="created_date" value="2019-02-01"/>
-            <column name="created_time" value="12:00:00"/>
-            <column name="updated_date" value="2019-02-01"/>
-            <column name="updated_time" value="12:00:00"/>
-            <column name="active" value="TRUE"/>
+            <column name="created" value="2019-02-01 12:00:00"/>
+            <column name="updated" value="2019-02-01 12:00:00"/>
+            <column name="complete" value="FALSE"/>
             <column name="holder_id" value="2"/>
             <column name="history" value="test 2"/>
         </insert>
@@ -41,11 +37,9 @@
             <column name="description" value="description 3"/>
             <column name="client_name" value="test client 3"/>
             <column name="client_telephone" value="test telephone 3"/>
-            <column name="created_date" value="2019-03-01"/>
-            <column name="created_time" value="12:00:00"/>
-            <column name="updated_date" value="2019-03-01"/>
-            <column name="updated_time" value="12:00:00"/>
-            <column name="active" value="TRUE"/>
+            <column name="created" value="2019-03-01 12:00:00"/>
+            <column name="updated" value="2019-03-01 12:00:00"/>
+            <column name="complete" value="FALSE"/>
             <column name="holder_id" value="2"/>
             <column name="history" value="test 3"/>
         </insert>
@@ -57,13 +51,10 @@
             <column name="description" value="description 4"/>
             <column name="client_name" value="test client 4"/>
             <column name="client_telephone" value="test telephone 4"/>
-            <column name="created_date" value="2019-04-01"/>
-            <column name="created_time" value="12:00:00"/>
-            <column name="updated_date" value="2019-04-01"/>
-            <column name="updated_time" value="12:00:00"/>
-            <column name="active" value="TRUE"/>
+            <column name="created" value="2019-04-01 12:00:00"/>
+            <column name="updated" value="2019-04-01 12:00:00"/>
+            <column name="complete" value="FALSE"/>
             <column name="holder_id" value="2"/>
-
             <column name="history" value="test 4"/>
         </insert>
     </changeSet>
@@ -74,11 +65,9 @@
             <column name="description" value="description 5"/>
             <column name="client_name" value="test client 5"/>
             <column name="client_telephone" value="test telephone 5"/>
-            <column name="created_date" value="2019-05-01"/>
-            <column name="created_time" value="12:00:00"/>
-            <column name="updated_date" value="2019-05-01"/>
-            <column name="updated_time" value="12:00:00"/>
-            <column name="active" value="TRUE"/>
+            <column name="created" value="2019-05-01 12:00:00"/>
+            <column name="updated" value="2019-05-01 12:00:00"/>
+            <column name="complete" value="FALSE"/>
             <column name="holder_id" value="2"/>
             <column name="history" value="test 5"/>
         </insert>
@@ -90,11 +79,9 @@
             <column name="description" value="description 6"/>
             <column name="client_name" value="test client 6"/>
             <column name="client_telephone" value="test telephone 6"/>
-            <column name="created_date" value="2019-06-01"/>
-            <column name="created_time" value="12:00:00"/>
-            <column name="updated_date" value="2019-06-01"/>
-            <column name="updated_time" value="12:00:00"/>
-            <column name="active" value="TRUE"/>
+            <column name="created" value="2019-06-01 12:00:00"/>
+            <column name="updated" value="2019-06-01 12:00:00"/>
+            <column name="complete" value="FALSE"/>
             <column name="holder_id" value="2"/>
             <column name="history" value="test 6"/>
         </insert>
@@ -106,11 +93,9 @@
             <column name="description" value="description 7"/>
             <column name="client_name" value="test client 7"/>
             <column name="client_telephone" value="test telephone 7"/>
-            <column name="created_date" value="2019-07-01"/>
-            <column name="created_time" value="12:00:00"/>
-            <column name="updated_date" value="2019-07-01"/>
-            <column name="updated_time" value="12:00:00"/>
-            <column name="active" value="TRUE"/>
+            <column name="created" value="2019-07-01 12:00:00"/>
+            <column name="updated" value="2019-07-01 12:00:00"/>
+            <column name="complete" value="FALSE"/>
             <column name="holder_id" value="2"/>
             <column name="history" value="test 7"/>
         </insert>
@@ -122,11 +107,9 @@
             <column name="description" value="description 8"/>
             <column name="client_name" value="test client 8"/>
             <column name="client_telephone" value="test telephone 8"/>
-            <column name="created_date" value="2019-08-01"/>
-            <column name="created_time" value="12:00:00"/>
-            <column name="updated_date" value="2019-08-01"/>
-            <column name="updated_time" value="12:00:00"/>
-            <column name="active" value="TRUE"/>
+            <column name="created" value="2019-08-01 12:00:00"/>
+            <column name="updated" value="2019-08-01 12:00:00"/>
+            <column name="complete" value="FALSE"/>
             <column name="holder_id" value="2"/>
             <column name="history" value="test 8"/>
         </insert>
@@ -138,11 +121,9 @@
             <column name="description" value="description 9"/>
             <column name="client_name" value="test client 9"/>
             <column name="client_telephone" value="test telephone 9"/>
-            <column name="created_date" value="2019-09-01"/>
-            <column name="created_time" value="12:00:00"/>
-            <column name="updated_date" value="2019-09-01"/>
-            <column name="updated_time" value="12:00:00"/>
-            <column name="active" value="TRUE"/>
+            <column name="created" value="2019-09-01 12:00:00"/>
+            <column name="updated" value="2019-09-01 12:00:00"/>
+            <column name="complete" value="FALSE"/>
             <column name="holder_id" value="2"/>
             <column name="history" value="test 1"/>
         </insert>
@@ -154,11 +135,9 @@
             <column name="description" value="description 10"/>
             <column name="client_name" value="test client 10"/>
             <column name="client_telephone" value="test telephone 10"/>
-            <column name="created_date" value="2019-10-01"/>
-            <column name="created_time" value="12:00:00"/>
-            <column name="updated_date" value="2019-10-01"/>
-            <column name="updated_time" value="12:00:00"/>
-            <column name="active" value="TRUE"/>
+            <column name="created" value="2019-10-01 12:00:00"/>
+            <column name="updated" value="2019-10-01 12:00:00"/>
+            <column name="complete" value="FALSE"/>
             <column name="holder_id" value="2"/>
             <column name="history" value="test 10"/>
         </insert>
@@ -170,11 +149,9 @@
             <column name="description" value="description 11"/>
             <column name="client_name" value="test client 11"/>
             <column name="client_telephone" value="test telephone 11"/>
-            <column name="created_date" value="2019-11-01"/>
-            <column name="created_time" value="12:00:00"/>
-            <column name="updated_date" value="2019-11-01"/>
-            <column name="updated_time" value="12:00:00"/>
-            <column name="active" value="TRUE"/>
+            <column name="created" value="2019-11-01 12:00:00"/>
+            <column name="updated" value="2019-11-01 12:00:00"/>
+            <column name="complete" value="FALSE"/>
             <column name="holder_id" value="2"/>
             <column name="history" value="test 11"/>
         </insert>
@@ -186,11 +163,9 @@
             <column name="description" value="description 12"/>
             <column name="client_name" value="test client 12"/>
             <column name="client_telephone" value="test telephone 12"/>
-            <column name="created_date" value="2019-12-01"/>
-            <column name="created_time" value="12:00:00"/>
-            <column name="updated_date" value="2019-12-01"/>
-            <column name="updated_time" value="12:00:00"/>
-            <column name="active" value="TRUE"/>
+            <column name="created" value="2019-12-01 12:00:00"/>
+            <column name="updated" value="2019-12-01 12:00:00"/>
+            <column name="complete" value="FALSE"/>
             <column name="holder_id" value="2"/>
             <column name="history" value="test 12"/>
         </insert>
