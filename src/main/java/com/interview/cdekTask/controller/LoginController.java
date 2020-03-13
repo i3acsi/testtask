@@ -21,7 +21,7 @@ import java.util.Set;
 @Slf4j
 public class LoginController {
 
-    @RequestMapping(value = "/success", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/success", method = {RequestMethod.POST})
     public String user(@AuthenticationPrincipal User user) {
         Set<Role> roles = user.getRoles();
         if (roles.contains(Role.ROLE_ADMIN)) {

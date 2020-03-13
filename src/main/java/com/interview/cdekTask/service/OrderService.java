@@ -129,11 +129,13 @@ public class OrderService {
             history.append(LN);
             if (complete) {
                 order.setHolder(null);
+            } else {
+                order.setHolder(courier);
             }
             order.setUpdated(now);
             order.setHistory(history.toString());
             order.setComplete(complete);
-            orderRepo.save(order);
+            Order tmp = orderRepo.save(order);
         }
         return order;
     }

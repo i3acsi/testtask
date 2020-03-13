@@ -6,16 +6,19 @@ import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
+import org.springframework.test.web.servlet.RequestBuilder;
 
 import java.time.LocalDateTime;
+import java.util.regex.Matcher;
 
 import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.StringContains.containsString;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
 @Slf4j
@@ -41,9 +44,9 @@ public class ControllersTests extends com.interview.cdekTask.TestInit {
                 .andDo(print())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(3)))
-                .andExpect(jsonPath("$[0].id", Matchers.is(6)))
-                .andExpect(jsonPath("$[1].id", Matchers.is(7)))
-                .andExpect(jsonPath("$[2].id", Matchers.is(8)))
+                .andExpect(jsonPath("$[0].id", Matchers.is(5)))
+                .andExpect(jsonPath("$[1].id", Matchers.is(6)))
+                .andExpect(jsonPath("$[2].id", Matchers.is(7)))
                 .andExpect(jsonPath("$[0].name", Matchers.is("test order 5")))
                 .andExpect(jsonPath("$[1].name", Matchers.is("test order 6")))
                 .andExpect(jsonPath("$[2].name", Matchers.is("test order 7")))
@@ -73,9 +76,9 @@ public class ControllersTests extends com.interview.cdekTask.TestInit {
                 .andDo(print())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(3)))
-                .andExpect(jsonPath("$[0].id", Matchers.is(6)))
-                .andExpect(jsonPath("$[1].id", Matchers.is(7)))
-                .andExpect(jsonPath("$[2].id", Matchers.is(8)))
+                .andExpect(jsonPath("$[0].id", Matchers.is(5)))
+                .andExpect(jsonPath("$[1].id", Matchers.is(6)))
+                .andExpect(jsonPath("$[2].id", Matchers.is(7)))
                 .andExpect(jsonPath("$[0].name", Matchers.is("test order 5")))
                 .andExpect(jsonPath("$[1].name", Matchers.is("test order 6")))
                 .andExpect(jsonPath("$[2].name", Matchers.is("test order 7")))
@@ -102,9 +105,9 @@ public class ControllersTests extends com.interview.cdekTask.TestInit {
                 .andDo(print())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(3)))
-                .andExpect(jsonPath("$[0].id", Matchers.is(6)))
-                .andExpect(jsonPath("$[1].id", Matchers.is(7)))
-                .andExpect(jsonPath("$[2].id", Matchers.is(8)))
+                .andExpect(jsonPath("$[0].id", Matchers.is(5)))
+                .andExpect(jsonPath("$[1].id", Matchers.is(6)))
+                .andExpect(jsonPath("$[2].id", Matchers.is(7)))
                 .andExpect(jsonPath("$[0].name", Matchers.is("test order 5")))
                 .andExpect(jsonPath("$[1].name", Matchers.is("test order 6")))
                 .andExpect(jsonPath("$[2].name", Matchers.is("test order 7")))
@@ -124,19 +127,52 @@ public class ControllersTests extends com.interview.cdekTask.TestInit {
     @Test
     @WithUserDetails("courier1")
     public void whenCourierAcceptsOrderThenOrderChanges() throws Exception {
+        int[] id = new int[1];
+        String[] exp = new String[3];
+
         this.mockMvc.perform(get("/order"))
                 .andDo(print())
-                .andExpect(jsonPath("$[1].id", Matchers.is(2)))
-                .andExpect(jsonPath("$[1].holder.id", Matchers.is(2)))
+                .andDo(mvcResult -> {
+                    id[0] = getIdOfFirstOrder(mvcResult.getResponse().getContentAsString());
+                    exp[0] = String.format("$[%d].id", id[0] - 1);
+                    exp[1] = String.format("$[%d].holder.id", id[0] - 1);
+                    exp[2] = String.format("/order/%d", id[0]);
+
+                })
+                .andExpect(jsonPath(exp[0], Matchers.is(id[0])))
+                .andExpect(jsonPath(exp[1], Matchers.is(2)))
         ;
-        this.mockMvc.perform(get("/order/2"))
+        this.mockMvc.perform(get(exp[2]))
                 .andDo(print())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasKey("id")))
-                .andExpect(jsonPath("$.id", Matchers.is(2)))
+                .andExpect(jsonPath("$.id", Matchers.is(id[0])))
                 .andExpect(jsonPath("$", hasKey("holder")))
                 .andExpect(jsonPath("$.holder.id", Matchers.is(3)))
         ;
     }
 
+    @Test
+    @WithUserDetails("courier1")
+    public void whenCourierCompleteOrderThenListOfOrdersGetShorterByOne() throws Exception {
+        this.mockMvc.perform(get("/order"))
+                .andDo(print())
+                .andExpect(jsonPath("$", hasSize(12)));
+
+        this.mockMvc.perform(delete("/order/5"))
+                .andDo(print());
+
+        this.mockMvc.perform(get("/order"))
+                .andDo(print())
+                .andExpect(jsonPath("$", hasSize(11)));
+    }
+
+
+
+
+
+    private int getIdOfFirstOrder(String response) {
+        String tmp = response.split(",")[0];
+        return Integer.valueOf(tmp.substring(7));
+    }
 }
