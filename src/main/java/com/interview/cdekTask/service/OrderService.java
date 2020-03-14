@@ -7,12 +7,9 @@ import com.interview.cdekTask.repository.OrderRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 import java.util.*;
-
-import static java.time.LocalDate.parse;
 
 @Service
 @AllArgsConstructor
@@ -79,6 +76,9 @@ public class OrderService {
                 result = orderRepo.getOrdersByHolderIsNullAndCompleteIsFalseOrderByUpdated();
             }
         }
+        if (result == null || result.isEmpty()) { ;
+            return Collections.emptyList();
+        }
         return result;
     }
 
@@ -104,39 +104,65 @@ public class OrderService {
 
     public Order courierAcceptsOrder(Long id, User courier) {
         Order order = orderRepo.findById(id).orElse(null);
-        return updateParamsAndSave(" ORDER ACCEPTED BY COURIER : ", false, courier, order);
+        if (order != null) order = updateParamsAndSave("accept", courier, order);
+        return order;
     }
 
     public void courierCompleteOrder(Long id, User courier) {
-        Order order = orderRepo.findById(id).orElse(null);
-        updateParamsAndSave(" ORDER COMPLETED BY COURIER : ", true, courier, order);
+        orderRepo.findById(id).ifPresent(
+                order -> updateParamsAndSave("complete", courier, order));
     }
 
 
     public void courierCanceledOrder(Long id, User courier) {
-        Order order = orderRepo.findById(id).orElse(null);
-        updateParamsAndSave(" ORDER CANCELED BY COURIER : ", false, courier, order);
+        orderRepo.findById(id).ifPresent(
+                order -> updateParamsAndSave("cancel", courier, order));
     }
 
-    private Order updateParamsAndSave(String msg, boolean complete, User courier, Order order) {
-        if (order != null) {
-            StringBuilder history = new StringBuilder(order.getHistory());
-            LocalDateTime now = LocalDateTime.now();
-            history.append(now.toString());
-            history.append(DELIMITER);
-            history.append(msg);
-            history.append(courier.getUsername()).append(DELIMITER).append(" ID:").append(courier.getId());
-            history.append(LN);
-            if (complete) {
+    /*
+    difference between canceled Order, accepted Order, completed Order:
+    accepted: completed: false, holder: courier
+    cancelled: completed: false, holder: null
+    completed: completed: true, holder: null
+     */
+    private final Map<String, Object[]> params = new HashMap<>();
+
+    {
+//        msg, complete, hasHolder
+        params.put("accept", new Object[]{" ORDER ACCEPTED BY COURIER : ", false, true});
+        params.put("complete", new Object[]{" ORDER COMPLETED BY COURIER : ", true, false});
+        params.put("cancel", new Object[]{" ORDER CANCELED BY COURIER : ", false, false});
+    }
+
+    private Order updateParamsAndSave(String act, User courier, Order order) {
+        Object[] parameters = params.get(act);
+        String msg = (String) parameters[0];
+        boolean complete = (boolean) parameters[1];
+        boolean hasHolder = (boolean) parameters[2];
+        if (hasHolder) {
+            order.setHolder(courier);
+        } else {
+            if (checkHolder(courier, order)) {
                 order.setHolder(null);
             } else {
-                order.setHolder(courier);
+                return order;
             }
-            order.setUpdated(now);
-            order.setHistory(history.toString());
-            order.setComplete(complete);
-            Order tmp = orderRepo.save(order);
         }
-        return order;
+
+        StringBuilder history = new StringBuilder(order.getHistory());
+        LocalDateTime now = LocalDateTime.now();
+        history.append(now.toString()).append(LN);
+        history.append(DELIMITER);
+        history.append(msg);
+        history.append(courier.getUsername()).append(DELIMITER).append(" ID:").append(courier.getId());
+
+        order.setUpdated(now);
+        order.setHistory(history.toString());
+        order.setComplete(complete);
+        return orderRepo.save(order);
+    }
+
+    private boolean checkHolder(User courier, Order order) {
+        return courier.getId().equals(order.getHolder().getId());
     }
 }
