@@ -1,7 +1,6 @@
 package com.interview.cdekTask.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,13 +14,7 @@ import java.util.Set;
 @Table(name = "usr")
 @Getter
 @Setter
-public class User implements UserDetails {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonView(Views.CourierView.class)
-    private Long id;
-
-    @JsonView(Views.CourierView.class)
+public class User extends AbstractEntity implements UserDetails {
     @Column(name = "username")
     private String username;
 
@@ -29,14 +22,12 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
-    @JsonView(Views.CourierView.class)
     @Column(name = "telephone")
     private String telephone;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
-    @JsonView(Views.FullView.class)
     private Set<Role> roles;
 
     @JsonIgnore
