@@ -1,10 +1,11 @@
 package com.interview.cdekTask.controller;
 
 import com.interview.cdekTask.dto.OrderDto;
-import com.interview.cdekTask.dto.OrderDtoWithDetails;
+import com.interview.cdekTask.dto.OrderDtoAdmin;
+import com.interview.cdekTask.dto.OrderDtoOperator;
 import com.interview.cdekTask.entity.Order;
 import com.interview.cdekTask.entity.User;
-import com.interview.cdekTask.mapper.OrderDtoMapper;
+import com.interview.cdekTask.mapper.dtoMapper.OrderDtoMapper;
 import com.interview.cdekTask.service.OrderService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,31 +26,34 @@ public class OrderController {
                                @RequestParam(required = false) String to) {
         List<Order> result = orderService.todoListCourier(from, to);
         return result.stream()
-                .map(orderDtoMapper::toDto)
+                .map(orderDtoMapper::toDtoCourier)
                 .collect(Collectors.toList());
     }
 
 
     @RequestMapping(value = "/order-manage", method = RequestMethod.GET)
-    public List<OrderDtoWithDetails> listManage(@RequestParam(required = false) String from,
-                                                @RequestParam(required = false) String to) {
+    public List<OrderDtoOperator> listManage(@RequestParam(required = false) String from,
+                                             @RequestParam(required = false) String to) {
         List<Order> result = orderService.getOrdersByLastDateRange(from, to);
         return result.stream()
-                .map(orderDtoMapper::toDtoWithDetails)
+                .map(orderDtoMapper::toDtoOperator)
                 .collect(Collectors.toList());
     }
 
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
-    public List<Order> fullList(@RequestParam(required = false) String from,
-                                 @RequestParam(required = false) String to) {
-        return  orderService.getOrdersByLastDateRange(from, to);
+    public List<OrderDtoAdmin> fullList(@RequestParam(required = false) String from,
+                                        @RequestParam(required = false) String to) {
+        List<Order> result = orderService.getOrdersByLastDateRange(from, to);
+        return result.stream()
+                .map(orderDtoMapper::toDtoAdmin)
+                .collect(Collectors.toList());
     }
 
     @RequestMapping(value = "/order/{id}", method = RequestMethod.GET)
     public OrderDto acceptOrder(@PathVariable Long id,
-                             @AuthenticationPrincipal User user) {
+                                @AuthenticationPrincipal User user) {
 
-        return orderDtoMapper.toDto(orderService.courierAcceptsOrder(id, user));
+        return orderDtoMapper.toDtoCourier(orderService.courierAcceptsOrder(id, user));
     }
 
     @RequestMapping(value = "/order/{id}", method = RequestMethod.DELETE)
@@ -67,13 +71,13 @@ public class OrderController {
     }
 
     @RequestMapping(value = "/order-manage/toCall", method = RequestMethod.GET)
-    public List<OrderDtoWithDetails> listToCall(@RequestParam(required = false) String from,
-                                  @RequestParam(required = false) String to,
-                                  @RequestParam(required = false) String nomFrom,
-                                  @RequestParam(required = false) String nomTo) {
+    public List<OrderDtoOperator> listToCall(@RequestParam(required = false) String from,
+                                             @RequestParam(required = false) String to,
+                                             @RequestParam(required = false) String nomFrom,
+                                             @RequestParam(required = false) String nomTo) {
 
         return orderService.toCallListOperator(from, to, nomFrom, nomTo).stream()
-                .map(orderDtoMapper::toDtoWithDetails)
+                .map(orderDtoMapper::toDtoOperator)
                 .collect(Collectors.toList());
     }
 

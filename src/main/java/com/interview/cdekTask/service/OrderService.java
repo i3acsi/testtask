@@ -7,7 +7,6 @@ import com.interview.cdekTask.repository.OrderRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -77,7 +76,7 @@ public class OrderService {
                 result = orderRepo.getOrdersByHolderIsNullAndCompleteIsFalseOrderByUpdated();
             }
         }
-        if (result == null || result.isEmpty()) { ;
+        if (result == null || result.isEmpty()) {
             return Collections.emptyList();
         }
         return result;

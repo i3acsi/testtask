@@ -11,6 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserDto extends AbstractDto{
+    private Long id;
     private String username;
     private String telephone;
     private List<String> roles;

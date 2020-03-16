@@ -14,11 +14,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class OrderDtoWithDetails extends OrderDtoSimple {
-    private UserDto holder;
+public class OrderDtoOperator extends OrderDtoCourier {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "YYYY-MM-dd HH:mm:ss")
     private LocalDateTime created;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "YYYY-MM-dd HH:mm:ss")
-    private LocalDateTime updated;
+    private String history;
+
 }

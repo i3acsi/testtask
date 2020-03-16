@@ -16,7 +16,6 @@ public interface OrderRepo extends JpaRepository<Order, Long> {
 
     List<Order> getOrdersByUpdatedBetween(LocalDateTime from, LocalDateTime to);
 
-
     List<Order> getOrdersByUpdatedBetweenAndHolderRolesOrderByUpdated(LocalDateTime from, LocalDateTime to, GrantedAuthority holder_authorities);
 
     List<Order> getOrdersByHolderRolesOrderByUpdated(GrantedAuthority holder_authorities);

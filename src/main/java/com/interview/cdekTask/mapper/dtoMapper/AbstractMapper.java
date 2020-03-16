@@ -1,4 +1,4 @@
-package com.interview.cdekTask.mapper;
+package com.interview.cdekTask.mapper.dtoMapper;
 
 import com.interview.cdekTask.entity.AbstractEntity;
 import com.interview.cdekTask.dto.AbstractDto;

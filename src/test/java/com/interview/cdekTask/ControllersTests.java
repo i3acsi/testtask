@@ -4,7 +4,6 @@ package com.interview.cdekTask;
 import com.interview.cdekTask.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.hamcrest.Matchers;
-import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -90,12 +89,12 @@ public class ControllersTests extends com.interview.cdekTask.TestInit {
                 .andExpect(jsonPath("$[1].created", Matchers.is("2019-06-01 12:00:00")))
                 .andExpect(jsonPath("$[2]", hasKey("created")))
                 .andExpect(jsonPath("$[2].created", Matchers.is("2019-07-01 12:00:00")))
-                .andExpect(jsonPath("$[0].holder", hasKey("roles")))
-                .andExpect(jsonPath("$[1].holder", hasKey("roles")))
-                .andExpect(jsonPath("$[2].holder", hasKey("roles")))
-                .andExpect(jsonPath("$[0].holder.roles", Matchers.contains("ROLE_OPERATOR")))
-                .andExpect(jsonPath("$[1].holder.roles", Matchers.contains("ROLE_OPERATOR")))
-                .andExpect(jsonPath("$[2].holder.roles", Matchers.contains("ROLE_OPERATOR")))
+                .andExpect(jsonPath("$[0]", hasKey("holderName")))
+                .andExpect(jsonPath("$[1]", hasKey("holderName")))
+                .andExpect(jsonPath("$[2]", hasKey("holderName")))
+                .andExpect(jsonPath("$[0].holderName", Matchers.is("operator1")))
+                .andExpect(jsonPath("$[1].holderName", Matchers.is("operator1")))
+                .andExpect(jsonPath("$[2].holderName", Matchers.is("operator1")))
 
         ;
     }
@@ -120,9 +119,9 @@ public class ControllersTests extends com.interview.cdekTask.TestInit {
                 .andExpect(jsonPath("$[0]", Matchers.not(hasKey("created"))))
                 .andExpect(jsonPath("$[1]", Matchers.not(hasKey("created"))))
                 .andExpect(jsonPath("$[2]", Matchers.not(hasKey("created"))))
-                .andExpect(jsonPath("$[0].holderId", Matchers.is(2)))
-                .andExpect(jsonPath("$[1].holderId", Matchers.is(2)))
-                .andExpect(jsonPath("$[2].holderId", Matchers.is(2)))
+                .andExpect(jsonPath("$[0].holderName", Matchers.is("operator1")))
+                .andExpect(jsonPath("$[1].holderName", Matchers.is("operator1")))
+                .andExpect(jsonPath("$[2].holderName", Matchers.is("operator1")))
         ;
     }
 
@@ -177,9 +176,10 @@ public class ControllersTests extends com.interview.cdekTask.TestInit {
                     .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                     .andExpect(jsonPath("$", hasKey("id")))
                     .andExpect(jsonPath("$.id", Matchers.is(1)))
-                    .andExpect(jsonPath("$", hasKey("holderId")))
-                    .andExpect(jsonPath("$.holderId", Matchers.is(3)))
-            ;
+                    .andExpect(jsonPath("$", hasKey("holderName")))
+                    .andExpect(jsonPath("$.holderName", Matchers.is("courier1")))
+                    .andExpect(jsonPath("$", hasKey("holderTelephone")))
+                    .andExpect(jsonPath("$.holderTelephone", Matchers.is("2")));
 
             this.mockMvc.perform(delete("/order/1"))
                     .andDo(print());
@@ -220,9 +220,8 @@ public class ControllersTests extends com.interview.cdekTask.TestInit {
                     .andDo(print())
                     .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                     .andExpect(jsonPath("$", hasKey("id")))
-                    .andExpect(jsonPath("$.id", Matchers.is(1)))
-                    .andExpect(jsonPath("$", hasKey("holderId")))
-                    .andExpect(jsonPath("$.holderId", Matchers.is(3)))
+                    .andExpect(jsonPath("$", hasKey("holderName")))
+                    .andExpect(jsonPath("$.holderName", Matchers.is("courier1")))
             ;
 
             this.mockMvc.perform(post("/order/1")
@@ -232,7 +231,8 @@ public class ControllersTests extends com.interview.cdekTask.TestInit {
             this.mockMvc.perform(get("/order-manage/toCall")
                     .with(user(userService.loadUserByUsername("operator1"))))
                     .andDo(print())
-                    .andExpect(jsonPath("$[0].holder", Matchers.nullValue()))
+                    .andExpect(jsonPath("$[0].holderName", Matchers.nullValue()))
+                    .andExpect(jsonPath("$[0].holderTelephone", Matchers.nullValue()))
                     .andExpect(jsonPath("$[0].id", Matchers.is(1)));
             throw new RuntimeException("rollback for cancel method");
         } catch (RuntimeException e) {
