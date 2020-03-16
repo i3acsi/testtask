@@ -9,6 +9,8 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -24,8 +26,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @Slf4j
 public class ControllersTests extends com.interview.cdekTask.TestInit {
-    private static Integer globalId = 1;
-
     @Test
     @WithUserDetails("admin")
     public void adminPageTest() throws Exception {
@@ -134,8 +134,27 @@ public class ControllersTests extends com.interview.cdekTask.TestInit {
      */
     @Test
     @WithUserDetails("courier1")
+    @Transactional(rollbackFor = RuntimeException.class, propagation = Propagation.REQUIRED)
     public void whenCourierAcceptsOrderThenOrderChanges() throws Exception {
-        acceptOrderAndGetOrdersId();
+        try {
+            this.mockMvc.perform(get("/order"))
+                    .andDo(print())
+                    .andExpect(jsonPath("$[0].id", Matchers.is(1)))
+                    .andExpect(jsonPath("$[%d].holderId", Matchers.is(2)))
+            ;
+
+            this.mockMvc.perform(get("/order/1"))
+                    .andDo(print())
+                    .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(jsonPath("$", hasKey("id")))
+                    .andExpect(jsonPath("$.id", Matchers.is(1)))
+                    .andExpect(jsonPath("$", hasKey("holderId")))
+                    .andExpect(jsonPath("$.holderId", Matchers.is(3)))
+            ;
+            throw new RuntimeException("rollback for accept method");
+        } catch (RuntimeException e) {
+            log.info(e.getMessage());
+        }
     }
 
     /**
@@ -146,18 +165,34 @@ public class ControllersTests extends com.interview.cdekTask.TestInit {
      */
     @Test
     @WithUserDetails("courier1")
+    @Transactional(rollbackFor = RuntimeException.class, propagation = Propagation.REQUIRED)
     public void whenCourierCompleteOrderThenListOfOrdersGetShorterByOne() throws Exception {
-        this.mockMvc.perform(get("/order"))
-                .andDo(print())
-                .andExpect(jsonPath("$", hasSize(11)));
+        try {
+            this.mockMvc.perform(get("/order"))
+                    .andDo(print())
+                    .andExpect(jsonPath("$", hasSize(12)));
 
-        int id = acceptOrderAndGetOrdersId();
-        this.mockMvc.perform(delete(String.format("/order/%d", id)))
-                .andDo(print());
+            this.mockMvc.perform(get("/order/1"))
+                    .andDo(print())
+                    .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(jsonPath("$", hasKey("id")))
+                    .andExpect(jsonPath("$.id", Matchers.is(1)))
+                    .andExpect(jsonPath("$", hasKey("holderId")))
+                    .andExpect(jsonPath("$.holderId", Matchers.is(3)))
+            ;
 
-        this.mockMvc.perform(get("/order"))
-                .andDo(print())
-                .andExpect(jsonPath("$", hasSize(10)));
+            this.mockMvc.perform(delete("/order/1"))
+                    .andDo(print());
+
+            this.mockMvc.perform(get("/order"))
+                    .andDo(print())
+                    .andExpect(jsonPath("$", hasSize(11)));
+
+            throw new RuntimeException("rollback for complete method");
+        } catch (RuntimeException e) {
+            log.info(e.getMessage());
+        }
+
     }
 
 
@@ -170,61 +205,40 @@ public class ControllersTests extends com.interview.cdekTask.TestInit {
     @Autowired
     private UserService userService;
 
-    @Before
-    public void init() throws Exception {
-        acceptAndCancel();
-    }
 
     @Test
-    @WithUserDetails(value = "operator1")
+    @Transactional(rollbackFor = RuntimeException.class, propagation = Propagation.REQUIRED)
     public void whenCourierCancelOrderThenListOfOrdersToCallContainsThisOrder() throws Exception {
-        this.mockMvc.perform(get("/order-manage/toCall")
-                .with(user(userService.loadUserByUsername("operator1"))))
-                .andDo(print())
-                .andExpect(jsonPath("$[0].complete", Matchers.is(false)))
-                .andExpect(jsonPath("$[0].holder", Matchers.nullValue()))
-                .andExpect(jsonPath("$[0].id", Matchers.is(12)));
+        try {
+            this.mockMvc.perform(get("/order-manage/toCall")
+                    .with(user(userService.loadUserByUsername("operator1"))))
+                    .andDo(print())
+                    .andExpect(jsonPath("$", hasSize(0)));
 
+            this.mockMvc.perform(get("/order/1")
+                    .with(user(userService.loadUserByUsername("courier1"))))
+                    .andDo(print())
+                    .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(jsonPath("$", hasKey("id")))
+                    .andExpect(jsonPath("$.id", Matchers.is(1)))
+                    .andExpect(jsonPath("$", hasKey("holderId")))
+                    .andExpect(jsonPath("$.holderId", Matchers.is(3)))
+            ;
+
+            this.mockMvc.perform(post("/order/1")
+                    .with(user(userService.loadUserByUsername("courier1"))))
+                    .andDo(print());
+
+            this.mockMvc.perform(get("/order-manage/toCall")
+                    .with(user(userService.loadUserByUsername("operator1"))))
+                    .andDo(print())
+                    .andExpect(jsonPath("$[0].holder", Matchers.nullValue()))
+                    .andExpect(jsonPath("$[0].id", Matchers.is(1)));
+            throw new RuntimeException("rollback for cancel method");
+        } catch (RuntimeException e) {
+            log.info(e.getMessage());
+        }
     }
-
-
-    //    util method
-    private int acceptOrderAndGetOrdersId() throws Exception {
-        String[] exp = new String[3];
-
-        this.mockMvc.perform(get("/order"))
-                .andDo(print())
-                .andDo(mvcResult -> {
-                    exp[0] = String.format("$[%d].id", 0);
-                    exp[1] = String.format("$[%d].holderId", 0);
-                    exp[2] = String.format("/order/%d", globalId);
-                })
-                .andExpect(jsonPath(exp[0], Matchers.is(globalId)))
-                .andExpect(jsonPath(exp[1], Matchers.is(2)))
-        ;
-
-        this.mockMvc.perform(get(exp[2]))
-                .andDo(print())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$", hasKey("id")))
-                .andExpect(jsonPath("$.id", Matchers.is(globalId)))
-                .andExpect(jsonPath("$", hasKey("holderId")))
-                .andExpect(jsonPath("$.holderId", Matchers.is(3)))
-        ;
-        int tmp = globalId;
-        globalId += 1;
-        return tmp;
-    }
-
-    private void acceptAndCancel() throws Exception {
-        this.mockMvc.perform(get("/order/12")
-                .with(user(userService.loadUserByUsername("courier1"))))
-                .andDo(print());
-        this.mockMvc.perform(post("/order/12")
-                .with(user(userService.loadUserByUsername("courier1"))))
-                .andDo(print());
-    }
-
 
 }
 
