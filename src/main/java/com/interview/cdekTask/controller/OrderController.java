@@ -6,6 +6,7 @@ import com.interview.cdekTask.dto.OrderDtoOperator;
 import com.interview.cdekTask.entity.Order;
 import com.interview.cdekTask.entity.User;
 import com.interview.cdekTask.mapper.dtoMapper.OrderDtoMapper;
+import com.interview.cdekTask.mapper.entityMapper.OrderMapper;
 import com.interview.cdekTask.service.OrderService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
 public class OrderController {
     private final OrderService orderService;
     private final OrderDtoMapper orderDtoMapper;
-
+    private final OrderMapper orderMapper;
 
     @RequestMapping(value = "/order", method = RequestMethod.GET)
     public List<OrderDto> list(@RequestParam(required = false) String from,
@@ -41,12 +42,13 @@ public class OrderController {
     }
 
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
-    public List<OrderDtoAdmin> fullList(@RequestParam(required = false) String from,
+    public List<Order> fullList(@RequestParam(required = false) String from,
                                         @RequestParam(required = false) String to) {
-        List<Order> result = orderService.getOrdersByLastDateRange(from, to);
-        return result.stream()
-                .map(orderDtoMapper::toDtoAdmin)
-                .collect(Collectors.toList());
+//        List<Order> result = orderService.getOrdersByLastDateRange(from, to);
+//        return result.stream()
+//                .map(orderDtoMapper::toDtoAdmin)
+//                .collect(Collectors.toList());
+        return orderMapper.findAllOrders();
     }
 
     @RequestMapping(value = "/order/{id}", method = RequestMethod.GET)
