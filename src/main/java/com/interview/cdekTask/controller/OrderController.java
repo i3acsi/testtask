@@ -4,6 +4,7 @@ import com.interview.cdekTask.dto.OrderDto;
 import com.interview.cdekTask.dto.OrderDtoAdmin;
 import com.interview.cdekTask.dto.OrderDtoOperator;
 import com.interview.cdekTask.entity.Order;
+import com.interview.cdekTask.entity.Role;
 import com.interview.cdekTask.entity.User;
 import com.interview.cdekTask.mapper.dtoMapper.OrderDtoMapper;
 import com.interview.cdekTask.mapper.entityMapper.OrderMapper;
@@ -13,6 +14,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -43,11 +45,7 @@ public class OrderController {
 
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public List<Order> fullList(@RequestParam(required = false) String from,
-                                        @RequestParam(required = false) String to) {
-//        List<Order> result = orderService.getOrdersByLastDateRange(from, to);
-//        return result.stream()
-//                .map(orderDtoMapper::toDtoAdmin)
-//                .collect(Collectors.toList());
+                              @RequestParam(required = false) String to) {
         return orderMapper.findAllOrders();
     }
 
