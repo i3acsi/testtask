@@ -1,5 +1,6 @@
 package com.interview.cdekTask.mapper.dtoMapper;
 
+import com.interview.cdekTask.dto.OrderDto;
 import com.interview.cdekTask.dto.OrderDtoAdmin;
 import com.interview.cdekTask.dto.OrderDtoCourier;
 import com.interview.cdekTask.dto.OrderDtoOperator;
@@ -43,13 +44,22 @@ public class OrderDtoMapper extends AbstractMapper {
                 .addMappings(m -> m.skip(Order::setHolder)).setPostConverter(toEntityConverter());
     }
 
+    public Order toEntity(OrderDto orderDto, User holder){
+        Order entity = Objects.isNull(orderDto)
+                ? null
+                : mapper.map(orderDto, Order.class);
+        if (!Objects.isNull(entity)) {
+            entity.setHolder(holder);
+            orderDto.setHolderTelephone(entity.getHolder().getTelephone());
+        }
+        return orderDto;
+    }
+
     public OrderDtoCourier toDtoCourier(Order entity) {
         OrderDtoCourier orderDto = Objects.isNull(entity)
                 ? null
                 : mapper.map(entity, OrderDtoCourier.class);
         if (!Objects.isNull(orderDto)) {
-            log.info("&&&&");
-            log.info(entity.getHolder().getUsername());
             orderDto.setHolderName(entity.getHolder().getUsername());
             orderDto.setHolderTelephone(entity.getHolder().getTelephone());
         }

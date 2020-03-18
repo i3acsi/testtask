@@ -66,6 +66,7 @@ public class OrderController {
     @RequestMapping(value = "/order/{id}", method = RequestMethod.POST)
     public String cancelOrder(@PathVariable Long id,
                               @AuthenticationPrincipal User user) {
+        //todo user->userDto?
         orderService.courierCanceledOrder(id, user);
         return "redirect:/order";
     }
@@ -77,6 +78,20 @@ public class OrderController {
                                              @RequestParam(required = false) String nomTo) {
 
         return orderService.toCallListOperator(from, to, nomFrom, nomTo).stream()
+                .map(orderDtoMapper::toDtoOperator)
+                .collect(Collectors.toList());
+    }
+
+    @RequestMapping(value = "/order-manage", method = RequestMethod.POST)
+    public List<OrderDtoOperator> saveOrder(@RequestBody OrderDtoOperator orderDto,
+                                            @RequestBody(required = false) String from,
+                                            @RequestBody(required = false) String to,
+                                            @AuthenticationPrincipal User user) {
+        //todo user->userDto?
+        Order toSave = orderDtoMapper.
+        orderService.saveOrder(orderDto, user);
+        List<Order> result = orderService.getOrdersByLastDateRange(from, to);
+        return result.stream()
                 .map(orderDtoMapper::toDtoOperator)
                 .collect(Collectors.toList());
     }

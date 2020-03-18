@@ -1,5 +1,6 @@
 package com.interview.cdekTask.service;
 
+import com.interview.cdekTask.dto.OrderDtoOperator;
 import com.interview.cdekTask.entity.Order;
 import com.interview.cdekTask.entity.User;
 import com.interview.cdekTask.mapper.entityMapper.OrderMapper;
@@ -166,5 +167,8 @@ public class OrderService {
 
     private boolean checkHolder(User courier, Order order) {
         return courier.getId().equals(order.getHolder().getId());
+    }
+
+    public void saveOrder(OrderDtoOperator orderDto, User user) {
     }
 }
