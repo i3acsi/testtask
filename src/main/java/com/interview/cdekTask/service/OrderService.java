@@ -1,23 +1,24 @@
 package com.interview.cdekTask.service;
 
 import com.interview.cdekTask.entity.Order;
-import com.interview.cdekTask.entity.Role;
 import com.interview.cdekTask.entity.User;
-import com.interview.cdekTask.repository.OrderRepo;
+import com.interview.cdekTask.mapper.entityMapper.OrderMapper;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class OrderService {
     private static final String DELIMITER = "###";
     private static final String LN = System.lineSeparator();
 
-    private final OrderRepo orderRepo;
+    private final OrderMapper orderMapper;
 
     /**
      * The method returns a list of orders with an holder having "operator" authority.
@@ -30,14 +31,12 @@ public class OrderService {
     public List<Order> todoListCourier(String from,
                                        String to) {
         List<Order> result = new ArrayList<>();
-        Collection<GrantedAuthority> role = new HashSet<>();
-        role.add(Role.ROLE_OPERATOR);
         if (from != null && to != null) {
-            LocalDateTime f = LocalDateTime.parse(from);
-            LocalDateTime t = LocalDateTime.parse(to);
-            result = orderRepo.getOrdersByUpdatedBetweenAndHolderRolesOrderByUpdated(f, t, Role.ROLE_OPERATOR);
+            Timestamp f = Timestamp.valueOf(LocalDateTime.parse(from));
+            Timestamp t = Timestamp.valueOf(LocalDateTime.parse(to));
+            result = orderMapper.todoListCourierWithDateBetween(f, t);
         } else {
-            result = orderRepo.getOrdersByHolderRolesOrderByUpdated(Role.ROLE_OPERATOR);
+            result = orderMapper.todoListCourier();
         }
         return result;
     }
@@ -58,22 +57,22 @@ public class OrderService {
                                           String nomTo) {
         List<Order> result = new ArrayList<>();
         if (from != null && to != null) {
-            LocalDateTime f = LocalDateTime.parse(from);
-            LocalDateTime t = LocalDateTime.parse(to);
+            Timestamp f = Timestamp.valueOf(LocalDateTime.parse(from));
+            Timestamp t = Timestamp.valueOf(LocalDateTime.parse(to));
             if (nomFrom != null && nomTo != null) {
                 Long idFrom = Long.valueOf(nomFrom);
                 Long idTo = Long.valueOf(nomTo);
-                result = orderRepo.getOrdersByUpdatedBetweenAndIdBetweenAndHolderIsNullAndCompleteIsFalseOrderByUpdated(f, t, idFrom, idTo);
+                result = orderMapper.getOrdersByUpdatedBetweenAndIdBetweenAndHolderIsNullAndCompleteIsFalseOrderByUpdated(f, t, idFrom, idTo);
             } else {
-                result = orderRepo.getOrdersByUpdatedBetweenAndHolderIsNullAndCompleteIsFalseOrderByUpdated(f, t);
+                result = orderMapper.getOrdersByUpdatedBetweenAndHolderIsNullAndCompleteIsFalseOrderByUpdated(f, t);
             }
         } else {
             if (nomFrom != null && nomTo != null) {
                 Long idFrom = Long.valueOf(nomFrom);
                 Long idTo = Long.valueOf(nomTo);
-                result = orderRepo.getOrdersByHolderIsNullAndIdBetweenAndCompleteIsFalseOrderByUpdated(idFrom, idTo);
+                result = orderMapper.getOrdersByHolderIsNullAndIdBetweenAndCompleteIsFalseOrderByUpdated(idFrom, idTo);
             } else {
-                result = orderRepo.getOrdersByHolderIsNullAndCompleteIsFalseOrderByUpdated();
+                result = orderMapper.getOrdersByHolderIsNullAndCompleteIsFalseOrderByUpdated();
             }
         }
         if (result == null || result.isEmpty()) {
@@ -93,30 +92,28 @@ public class OrderService {
                                                 String to) {
         List<Order> result = new ArrayList<>();
         if (from != null && to != null) {
-            LocalDateTime f = LocalDateTime.parse(from);
-            LocalDateTime t = LocalDateTime.parse(to);
-            result = orderRepo.getOrdersByUpdatedBetween(f, t);
+            Timestamp f = Timestamp.valueOf(LocalDateTime.parse(from));
+            Timestamp t = Timestamp.valueOf(LocalDateTime.parse(to));
+            result = orderMapper.getOrdersByUpdatedBetweenForAdmin(f, t);
         } else {
-            result = orderRepo.findAll();
+            result = orderMapper.findAllOrdersForAdmin();
         }
         return result;
     }
 
     public Order courierAcceptsOrder(Long id, User courier) {
-        Order order = orderRepo.findById(id).orElse(null);
+        Order order = orderMapper.getOrderById(id);
         if (order != null) order = updateParamsAndSave("accept", courier, order);
         return order;
     }
 
     public void courierCompleteOrder(Long id, User courier) {
-        orderRepo.findById(id).ifPresent(
-                order -> updateParamsAndSave("complete", courier, order));
+        updateParamsAndSave("complete", courier, orderMapper.getOrderById(id));
     }
 
 
     public void courierCanceledOrder(Long id, User courier) {
-        orderRepo.findById(id).ifPresent(
-                order -> updateParamsAndSave("cancel", courier, order));
+        updateParamsAndSave("cancel", courier, orderMapper.getOrderById(id));
     }
 
     /*
@@ -159,7 +156,12 @@ public class OrderService {
         order.setUpdated(now);
         order.setHistory(history.toString());
         order.setComplete(complete);
-        return orderRepo.save(order);
+        orderMapper.updateOrder(order.getId(),
+                Objects.isNull(order.getHolder()) ? null : order.getHolder().getId(),
+                order.getHistory(),
+                order.isComplete(),
+                Timestamp.valueOf(order.getUpdated()));
+        return orderMapper.getOrderById(order.getId());
     }
 
     private boolean checkHolder(User courier, Order order) {

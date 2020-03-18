@@ -5,6 +5,7 @@ import com.interview.cdekTask.dto.OrderDtoCourier;
 import com.interview.cdekTask.dto.OrderDtoOperator;
 import com.interview.cdekTask.entity.Order;
 import com.interview.cdekTask.entity.User;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -13,6 +14,7 @@ import javax.annotation.PostConstruct;
 import java.util.Objects;
 
 @Component
+@Slf4j
 public class OrderDtoMapper extends AbstractMapper {
     private final ModelMapper mapper;
     private final UserDtoMapper userDtoMapper;
@@ -46,6 +48,8 @@ public class OrderDtoMapper extends AbstractMapper {
                 ? null
                 : mapper.map(entity, OrderDtoCourier.class);
         if (!Objects.isNull(orderDto)) {
+            log.info("&&&&");
+            log.info(entity.getHolder().getUsername());
             orderDto.setHolderName(entity.getHolder().getUsername());
             orderDto.setHolderTelephone(entity.getHolder().getTelephone());
         }

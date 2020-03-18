@@ -4,25 +4,23 @@ import com.interview.cdekTask.dto.OrderDto;
 import com.interview.cdekTask.dto.OrderDtoAdmin;
 import com.interview.cdekTask.dto.OrderDtoOperator;
 import com.interview.cdekTask.entity.Order;
-import com.interview.cdekTask.entity.Role;
 import com.interview.cdekTask.entity.User;
 import com.interview.cdekTask.mapper.dtoMapper.OrderDtoMapper;
-import com.interview.cdekTask.mapper.entityMapper.OrderMapper;
 import com.interview.cdekTask.service.OrderService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
 @AllArgsConstructor
+@Slf4j
 public class OrderController {
     private final OrderService orderService;
     private final OrderDtoMapper orderDtoMapper;
-    private final OrderMapper orderMapper;
 
     @RequestMapping(value = "/order", method = RequestMethod.GET)
     public List<OrderDto> list(@RequestParam(required = false) String from,
@@ -44,15 +42,17 @@ public class OrderController {
     }
 
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
-    public List<Order> fullList(@RequestParam(required = false) String from,
-                              @RequestParam(required = false) String to) {
-        return orderMapper.findAllOrders();
+    public List<OrderDtoAdmin> fullList(@RequestParam(required = false) String from,
+                                        @RequestParam(required = false) String to) {
+        List<Order> result = orderService.getOrdersByLastDateRange(from, to);
+        return result.stream()
+                .map(orderDtoMapper::toDtoAdmin)
+                .collect(Collectors.toList());
     }
 
     @RequestMapping(value = "/order/{id}", method = RequestMethod.GET)
     public OrderDto acceptOrder(@PathVariable Long id,
                                 @AuthenticationPrincipal User user) {
-
         return orderDtoMapper.toDtoCourier(orderService.courierAcceptsOrder(id, user));
     }
 

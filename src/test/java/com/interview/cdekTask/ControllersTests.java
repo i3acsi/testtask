@@ -39,8 +39,6 @@ public class ControllersTests extends com.interview.cdekTask.TestInit {
     public void loadOrdersWithDateRangeOnAdminPage() throws Exception {
         String from = LocalDateTime.of(2019, 5, 1, 12, 0, 0).toString();
         String to = LocalDateTime.of(2019, 7, 1, 12, 0, 0).toString();
-        log.info("FROM: " + from);
-        log.info("TO: " + to);
         this.mockMvc.perform(get("/admin").param("from", from).param("to", to))
                 .andDo(print())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -71,8 +69,6 @@ public class ControllersTests extends com.interview.cdekTask.TestInit {
     public void loadOrdersWithDateRangeOnOperatorsPage() throws Exception {
         String from = LocalDateTime.of(2019, 5, 1, 12, 0, 0).toString();
         String to = LocalDateTime.of(2019, 7, 1, 12, 0, 0).toString();
-        log.info("FROM: " + from);
-        log.info("TO: " + to);
         this.mockMvc.perform(get("/order-manage").param("from", from).param("to", to))
                 .andDo(print())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -104,8 +100,6 @@ public class ControllersTests extends com.interview.cdekTask.TestInit {
     public void loadOrdersWithDateRangeOnCouriersPage() throws Exception {
         String from = LocalDateTime.of(2019, 5, 1, 12, 0, 0).toString();
         String to = LocalDateTime.of(2019, 7, 1, 12, 0, 0).toString();
-        log.info("FROM: " + from);
-        log.info("TO: " + to);
         this.mockMvc.perform(get("/order").param("from", from).param("to", to))
                 .andDo(print())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
