@@ -1,5 +1,7 @@
 package com.interview.cdekTask.service;
 
+import com.interview.cdekTask.dto.OrderDto;
+import com.interview.cdekTask.dto.OrderDtoCourier;
 import com.interview.cdekTask.dto.OrderDtoOperator;
 import com.interview.cdekTask.entity.Order;
 import com.interview.cdekTask.entity.User;
@@ -169,6 +171,19 @@ public class OrderService {
         return courier.getId().equals(order.getHolder().getId());
     }
 
-    public void saveOrder(OrderDtoOperator orderDto, User user) {
+    public void saveOrder(OrderDtoCourier order, User user) {
+        Timestamp now = Timestamp.valueOf(LocalDateTime.now());
+        Long holderId = user.getId();
+        orderMapper.addNewOrder(
+                order.getName(),
+                order.getDescription(),
+                order.getClientName(),
+                order.getClientTelephone(),
+                false,
+                holderId,
+                String.format("ORDER CREATED BY OPERATOR %s WITH ID: %d at %s ", user.getUsername(), holderId, now)
+        );
+
+
     }
 }

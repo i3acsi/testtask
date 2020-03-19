@@ -1,7 +1,9 @@
 package com.interview.cdekTask.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.interview.cdekTask.dto.OrderDto;
 import com.interview.cdekTask.dto.OrderDtoAdmin;
+import com.interview.cdekTask.dto.OrderDtoCourier;
 import com.interview.cdekTask.dto.OrderDtoOperator;
 import com.interview.cdekTask.entity.Order;
 import com.interview.cdekTask.entity.User;
@@ -21,6 +23,7 @@ import java.util.stream.Collectors;
 public class OrderController {
     private final OrderService orderService;
     private final OrderDtoMapper orderDtoMapper;
+    private final ObjectMapper objectMapper;
 
     @RequestMapping(value = "/order", method = RequestMethod.GET)
     public List<OrderDto> list(@RequestParam(required = false) String from,
@@ -83,17 +86,12 @@ public class OrderController {
     }
 
     @RequestMapping(value = "/order-manage", method = RequestMethod.POST)
-    public List<OrderDtoOperator> saveOrder(@RequestBody OrderDtoOperator orderDto,
-                                            @RequestBody(required = false) String from,
-                                            @RequestBody(required = false) String to,
+    public String saveOrder(@RequestBody OrderDtoCourier orderDto,
+//                                            @RequestBody(required = false) String from,
+//                                            @RequestBody(required = false) String to,
                                             @AuthenticationPrincipal User user) {
-        //todo user->userDto?
-        Order toSave = orderDtoMapper.
         orderService.saveOrder(orderDto, user);
-        List<Order> result = orderService.getOrdersByLastDateRange(from, to);
-        return result.stream()
-                .map(orderDtoMapper::toDtoOperator)
-                .collect(Collectors.toList());
+        return "forward:/order-manage";
     }
 
 }

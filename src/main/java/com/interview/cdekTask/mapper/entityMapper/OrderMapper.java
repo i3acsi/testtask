@@ -14,6 +14,22 @@ import java.util.Set;
 
 @Mapper
 public interface OrderMapper {
+//    final String orderParams = "id, name, description, clientName, complete, CAST(updated AS DATE), CAST(created AS DATE), "
+
+    @Insert("insert into orders (name, description, client_name, client_telephone, created, updated, complete, holder_id, history) " +
+            "values (#{name}, #{description}, #{client_name}, #{client_telephone}, now(), now(), #{complete}, #{holder_id}, #{history});")
+    void addNewOrder(
+            @Param("name") String name,
+            @Param("description") String description,
+            @Param("client_name") String clientName,
+            @Param("client_telephone") String clientTelephone,
+//            @Param("created") Timestamp created,
+//            @Param("updated") Timestamp updated,
+            @Param("complete") Boolean complete,
+            @Param("holder_id") Long holderId,
+            @Param("history") String history
+    );
+
     @Results(value = {
             @Result(property = "id", column = "id", id = true),
             @Result(property = "name", column = "name"),

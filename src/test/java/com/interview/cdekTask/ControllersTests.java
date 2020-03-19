@@ -1,6 +1,9 @@
 package com.interview.cdekTask;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.interview.cdekTask.dto.OrderDtoCourier;
 import com.interview.cdekTask.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.hamcrest.Matchers;
@@ -11,11 +14,13 @@ import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.StringContains.containsString;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -25,6 +30,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @Slf4j
 public class ControllersTests extends com.interview.cdekTask.TestInit {
+    private ObjectMapper objectMapper;
+
+    @Autowired
+    public void setModelMapper(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
+
     @Test
     @WithUserDetails("admin")
     public void adminPageTest() throws Exception {
@@ -50,11 +62,14 @@ public class ControllersTests extends com.interview.cdekTask.TestInit {
                 .andExpect(jsonPath("$[1].name", Matchers.is("test order 6")))
                 .andExpect(jsonPath("$[2].name", Matchers.is("test order 7")))
                 .andExpect(jsonPath("$[0]", hasKey("created")))
-                .andExpect(jsonPath("$[0].created", Matchers.is("2019-05-01 12:00:00")))
+                .andExpect(jsonPath("$[0].created", Matchers.is(Timestamp.valueOf(LocalDateTime.of(2019, 05, 01, 12,00,00)))))
+
                 .andExpect(jsonPath("$[1]", hasKey("created")))
-                .andExpect(jsonPath("$[1].created", Matchers.is("2019-06-01 12:00:00")))
+                .andExpect(jsonPath("$[1].created", Matchers.is(Timestamp.valueOf(LocalDateTime.of(2019, 06, 01, 12,00,00)))))
+
                 .andExpect(jsonPath("$[2]", hasKey("created")))
-                .andExpect(jsonPath("$[2].created", Matchers.is("2019-07-01 12:00:00")))
+                .andExpect(jsonPath("$[2].created", Matchers.is(Timestamp.valueOf(LocalDateTime.of(2019, 07, 01, 12,00,00)))))
+
                 .andExpect(jsonPath("$[0].holder", hasKey("roles")))
                 .andExpect(jsonPath("$[0].holder.roles", Matchers.contains("ROLE_OPERATOR")))
                 .andExpect(jsonPath("$[1].holder", hasKey("roles")))
@@ -80,11 +95,12 @@ public class ControllersTests extends com.interview.cdekTask.TestInit {
                 .andExpect(jsonPath("$[1].name", Matchers.is("test order 6")))
                 .andExpect(jsonPath("$[2].name", Matchers.is("test order 7")))
                 .andExpect(jsonPath("$[0]", hasKey("created")))
-                .andExpect(jsonPath("$[0].created", Matchers.is("2019-05-01 12:00:00")))
+                .andExpect(jsonPath("$[0].created", Matchers.is(Timestamp.valueOf(LocalDateTime.of(2019, 05, 01, 12,00,00)))))
                 .andExpect(jsonPath("$[1]", hasKey("created")))
-                .andExpect(jsonPath("$[1].created", Matchers.is("2019-06-01 12:00:00")))
+                .andExpect(jsonPath("$[1].created", Matchers.is(Timestamp.valueOf(LocalDateTime.of(2019, 06, 01, 12,00,00)))))
                 .andExpect(jsonPath("$[2]", hasKey("created")))
-                .andExpect(jsonPath("$[2].created", Matchers.is("2019-07-01 12:00:00")))
+                .andExpect(jsonPath("$[2].created", Matchers.is(Timestamp.valueOf(LocalDateTime.of(2019, 07, 01, 12,00,00)))))
+
                 .andExpect(jsonPath("$[0]", hasKey("holderName")))
                 .andExpect(jsonPath("$[1]", hasKey("holderName")))
                 .andExpect(jsonPath("$[2]", hasKey("holderName")))
@@ -232,6 +248,59 @@ public class ControllersTests extends com.interview.cdekTask.TestInit {
         } catch (RuntimeException e) {
             log.info(e.getMessage());
         }
+    }
+
+    /**
+     * Operator add new order.
+     * <p>
+     * Before operator add the order, the length of list of orders is a.
+     * After operator add the order,  the length of list of orders is a+1.
+     * And list contains this order.
+     */
+    @Test
+    @Transactional(rollbackFor = RuntimeException.class, propagation = Propagation.REQUIRED)
+    public void whenOperatorAddOrderThenListOfOrdersGetLongerByOne() throws Exception {
+        try {
+            this.mockMvc.perform(get("/order-manage")
+                    .with(user(userService.loadUserByUsername("operator1"))))
+                    .andDo(print())
+                    .andExpect(jsonPath("$", hasSize(12)));
+            String name = "new test order";
+            String desc = "new test order desc";
+            String cliName ="new test order cli_name";
+            String cliTel = "new test order cli_tel";
+
+            OrderDtoCourier orderDto = new OrderDtoCourier();
+            orderDto.setName(name);
+            orderDto.setDescription(desc);
+            orderDto.setClientName(cliName);
+            orderDto.setClientTelephone(cliTel);
+
+            ObjectWriter ow = objectMapper.writer().withDefaultPrettyPrinter();
+            String order = ow.writeValueAsString(orderDto);
+
+            this.mockMvc.perform(post("/order-manage")
+                    .contentType(APPLICATION_JSON)
+                    .content(order)
+                    .with(user(userService.loadUserByUsername("operator1"))))
+                    .andDo(print());
+
+            this.mockMvc.perform(get("/order-manage")
+                    .with(user(userService.loadUserByUsername("operator1"))))
+                    .andDo(print())
+                    .andExpect(jsonPath("$", hasSize(13)))
+                    .andExpect(jsonPath("$[12].name", Matchers.is(name)))
+                    .andExpect(jsonPath("$[12].description", Matchers.is(desc)))
+                    .andExpect(jsonPath("$[12].clientName", Matchers.is(cliName)))
+                    .andExpect(jsonPath("$[12].clientTelephone", Matchers.is(cliTel)))
+
+            ;
+
+            throw new RuntimeException("rollback for addNewOrder method");
+        } catch (RuntimeException e) {
+            log.info(e.getMessage());
+        }
+
     }
 
 }

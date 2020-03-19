@@ -42,17 +42,20 @@ public class OrderDtoMapper extends AbstractMapper {
                 }).setPostConverter(toDtoConverter());
         mapper.createTypeMap(OrderDtoAdmin.class, Order.class)
                 .addMappings(m -> m.skip(Order::setHolder)).setPostConverter(toEntityConverter());
+
+        mapper.createTypeMap(OrderDtoOperator.class, Order.class)
+                .addMappings(m -> m.skip(Order::setHolder)).setPostConverter(toEntityConverter());
     }
 
-    public Order toEntity(OrderDto orderDto, User holder){
+    /*
+    setters to skip:
+    holder
+     */
+    public Order toEntity(OrderDtoOperator orderDto){
         Order entity = Objects.isNull(orderDto)
                 ? null
                 : mapper.map(orderDto, Order.class);
-        if (!Objects.isNull(entity)) {
-            entity.setHolder(holder);
-            orderDto.setHolderTelephone(entity.getHolder().getTelephone());
-        }
-        return orderDto;
+        return entity;
     }
 
     public OrderDtoCourier toDtoCourier(Order entity) {
