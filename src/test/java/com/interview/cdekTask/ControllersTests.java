@@ -14,6 +14,7 @@ import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
@@ -52,8 +53,12 @@ public class ControllersTests extends com.interview.cdekTask.TestInit {
         String from = LocalDateTime.of(2019, 5, 1, 12, 0, 0).toString();
         String to = LocalDateTime.of(2019, 7, 1, 12, 0, 0).toString();
         this.mockMvc.perform(get("/admin").param("from", from).param("to", to))
+                .andDo(mvcResult -> {
+                    System.out.println("TEST METHOD");
+                    System.out.println(mvcResult.getResponse().getContentAsString());
+                })
                 .andDo(print())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().contentType(APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(3)))
                 .andExpect(jsonPath("$[0].id", Matchers.is(5)))
                 .andExpect(jsonPath("$[1].id", Matchers.is(6)))
@@ -62,13 +67,13 @@ public class ControllersTests extends com.interview.cdekTask.TestInit {
                 .andExpect(jsonPath("$[1].name", Matchers.is("test order 6")))
                 .andExpect(jsonPath("$[2].name", Matchers.is("test order 7")))
                 .andExpect(jsonPath("$[0]", hasKey("created")))
-                .andExpect(jsonPath("$[0].created", Matchers.is(Timestamp.valueOf(LocalDateTime.of(2019, 05, 01, 12,00,00)))))
+                .andExpect(jsonPath("$[0].created", Matchers.is("2019-05-01 12:00:00")))
 
                 .andExpect(jsonPath("$[1]", hasKey("created")))
-                .andExpect(jsonPath("$[1].created", Matchers.is(Timestamp.valueOf(LocalDateTime.of(2019, 06, 01, 12,00,00)))))
+                .andExpect(jsonPath("$[1].created", Matchers.is("2019-06-01 12:00:00")))
 
                 .andExpect(jsonPath("$[2]", hasKey("created")))
-                .andExpect(jsonPath("$[2].created", Matchers.is(Timestamp.valueOf(LocalDateTime.of(2019, 07, 01, 12,00,00)))))
+                .andExpect(jsonPath("$[2].created", Matchers.is("2019-07-01 12:00:00")))
 
                 .andExpect(jsonPath("$[0].holder", hasKey("roles")))
                 .andExpect(jsonPath("$[0].holder.roles", Matchers.contains("ROLE_OPERATOR")))
@@ -95,11 +100,11 @@ public class ControllersTests extends com.interview.cdekTask.TestInit {
                 .andExpect(jsonPath("$[1].name", Matchers.is("test order 6")))
                 .andExpect(jsonPath("$[2].name", Matchers.is("test order 7")))
                 .andExpect(jsonPath("$[0]", hasKey("created")))
-                .andExpect(jsonPath("$[0].created", Matchers.is(Timestamp.valueOf(LocalDateTime.of(2019, 05, 01, 12,00,00)))))
+                .andExpect(jsonPath("$[0].created", Matchers.is("2019-05-01 12:00:00")))
                 .andExpect(jsonPath("$[1]", hasKey("created")))
-                .andExpect(jsonPath("$[1].created", Matchers.is(Timestamp.valueOf(LocalDateTime.of(2019, 06, 01, 12,00,00)))))
+                .andExpect(jsonPath("$[1].created", Matchers.is("2019-06-01 12:00:00")))
                 .andExpect(jsonPath("$[2]", hasKey("created")))
-                .andExpect(jsonPath("$[2].created", Matchers.is(Timestamp.valueOf(LocalDateTime.of(2019, 07, 01, 12,00,00)))))
+                .andExpect(jsonPath("$[2].created", Matchers.is("2019-07-01 12:00:00")))
 
                 .andExpect(jsonPath("$[0]", hasKey("holderName")))
                 .andExpect(jsonPath("$[1]", hasKey("holderName")))
@@ -267,7 +272,7 @@ public class ControllersTests extends com.interview.cdekTask.TestInit {
                     .andExpect(jsonPath("$", hasSize(12)));
             String name = "new test order";
             String desc = "new test order desc";
-            String cliName ="new test order cli_name";
+            String cliName = "new test order cli_name";
             String cliTel = "new test order cli_tel";
 
             OrderDtoCourier orderDto = new OrderDtoCourier();

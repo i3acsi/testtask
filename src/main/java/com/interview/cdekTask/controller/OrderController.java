@@ -1,6 +1,5 @@
 package com.interview.cdekTask.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.interview.cdekTask.dto.OrderDto;
 import com.interview.cdekTask.dto.OrderDtoAdmin;
 import com.interview.cdekTask.dto.OrderDtoCourier;
@@ -13,6 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,11 +23,11 @@ import java.util.stream.Collectors;
 public class OrderController {
     private final OrderService orderService;
     private final OrderDtoMapper orderDtoMapper;
-    private final ObjectMapper objectMapper;
 
     @RequestMapping(value = "/order", method = RequestMethod.GET)
-    public List<OrderDto> list(@RequestParam(required = false) String from,
-                               @RequestParam(required = false) String to) {
+    public List<OrderDto> list(
+            @RequestParam(required = false) String from,
+            @RequestParam(required = false) String to) {
         List<Order> result = orderService.todoListCourier(from, to);
         return result.stream()
                 .map(orderDtoMapper::toDtoCourier)
@@ -36,8 +36,9 @@ public class OrderController {
 
 
     @RequestMapping(value = "/order-manage", method = RequestMethod.GET)
-    public List<OrderDtoOperator> listManage(@RequestParam(required = false) String from,
-                                             @RequestParam(required = false) String to) {
+    public List<OrderDtoOperator> listManage(
+            @RequestParam(required = false) String from,
+            @RequestParam(required = false) String to) {
         List<Order> result = orderService.getOrdersByLastDateRange(from, to);
         return result.stream()
                 .map(orderDtoMapper::toDtoOperator)
@@ -45,8 +46,9 @@ public class OrderController {
     }
 
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
-    public List<OrderDtoAdmin> fullList(@RequestParam(required = false) String from,
-                                        @RequestParam(required = false) String to) {
+    public List<OrderDtoAdmin> fullList(
+            @RequestParam(required = false) String from,
+            @RequestParam(required = false) String to) {
         List<Order> result = orderService.getOrdersByLastDateRange(from, to);
         return result.stream()
                 .map(orderDtoMapper::toDtoAdmin)
@@ -54,31 +56,34 @@ public class OrderController {
     }
 
     @RequestMapping(value = "/order/{id}", method = RequestMethod.GET)
-    public OrderDto acceptOrder(@PathVariable Long id,
-                                @AuthenticationPrincipal User user) {
+    public OrderDto acceptOrder(
+            @PathVariable Long id,
+            @AuthenticationPrincipal User user) {
         return orderDtoMapper.toDtoCourier(orderService.courierAcceptsOrder(id, user));
     }
 
     @RequestMapping(value = "/order/{id}", method = RequestMethod.DELETE)
-    public String completeOrder(@PathVariable Long id,
-                                @AuthenticationPrincipal User user) {
+    public String completeOrder(
+            @PathVariable Long id,
+            @AuthenticationPrincipal User user) {
         orderService.courierCompleteOrder(id, user);
         return "redirect:/order";
     }
 
     @RequestMapping(value = "/order/{id}", method = RequestMethod.POST)
-    public String cancelOrder(@PathVariable Long id,
-                              @AuthenticationPrincipal User user) {
-        //todo user->userDto?
+    public String cancelOrder(
+            @PathVariable Long id,
+            @AuthenticationPrincipal User user) {
         orderService.courierCanceledOrder(id, user);
         return "redirect:/order";
     }
 
     @RequestMapping(value = "/order-manage/toCall", method = RequestMethod.GET)
-    public List<OrderDtoOperator> listToCall(@RequestParam(required = false) String from,
-                                             @RequestParam(required = false) String to,
-                                             @RequestParam(required = false) String nomFrom,
-                                             @RequestParam(required = false) String nomTo) {
+    public List<OrderDtoOperator> listToCall(
+            @RequestParam(required = false) String from,
+            @RequestParam(required = false) String to,
+            @RequestParam(required = false) String nomFrom,
+            @RequestParam(required = false) String nomTo) {
 
         return orderService.toCallListOperator(from, to, nomFrom, nomTo).stream()
                 .map(orderDtoMapper::toDtoOperator)
@@ -86,12 +91,15 @@ public class OrderController {
     }
 
     @RequestMapping(value = "/order-manage", method = RequestMethod.POST)
-    public String saveOrder(@RequestBody OrderDtoCourier orderDto,
-//                                            @RequestBody(required = false) String from,
-//                                            @RequestBody(required = false) String to,
-                                            @AuthenticationPrincipal User user) {
+    public String saveOrder(
+            @RequestBody OrderDtoCourier orderDto,
+            @RequestBody(required = false) String from,
+            @RequestBody(required = false) String to,
+            @AuthenticationPrincipal User user) {
         orderService.saveOrder(orderDto, user);
-        return "forward:/order-manage";
+        return (from != null && to != null) ?
+                String.format("forward:/order-manage?from=%s&to=%s", from, to)
+                : "forward:/order-manage";
     }
 
 }
