@@ -92,14 +92,15 @@ public class OrderController {
 
     @RequestMapping(value = "/order-manage", method = RequestMethod.POST)
     public String saveOrder(
+            RedirectAttributes redirectAttributes,
             @RequestBody OrderDtoCourier orderDto,
             @RequestBody(required = false) String from,
             @RequestBody(required = false) String to,
             @AuthenticationPrincipal User user) {
         orderService.saveOrder(orderDto, user);
-        return (from != null && to != null) ?
-                String.format("forward:/order-manage?from=%s&to=%s", from, to)
-                : "forward:/order-manage";
+        redirectAttributes.addFlashAttribute(from);
+        redirectAttributes.addFlashAttribute(to);
+        return "forward:/order-manage";
     }
 
 }
